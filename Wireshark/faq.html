@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.12">
+<title>Wireshark Frequently Asked Questions</title>
+<style>
+/*! normalize.css v2.1.2 | MIT License | git.io/normalize */
+/* ========================================================================== HTML5 display definitions ========================================================================== */
+/** Correct `block` display not defined in IE 8/9. */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+
+/** Correct `inline-block` display not defined in IE 8/9. */
+audio, canvas, video { display: inline-block; }
+
+/** Prevent modern browsers from displaying `audio` without controls. Remove excess height in iOS 5 devices. */
+audio:not([controls]) { display: none; height: 0; }
+
+/** Address `[hidden]` styling not present in IE 8/9. Hide the `template` element in IE, Safari, and Firefox < 22. */
+[hidden], template { display: none; }
+
+script { display: none !important; }
+
+/* ========================================================================== Base ========================================================================== */
+/** 1. Set default font family to sans-serif. 2. Prevent iOS text size adjust after orientation change, without disabling user zoom. */
+html { font-family: sans-serif; /* 1 */ -ms-text-size-adjust: 100%; /* 2 */ -webkit-text-size-adjust: 100%; /* 2 */ }
+
+/** Remove default margin. */
+body { margin: 0; }
+
+/* ========================================================================== Links ========================================================================== */
+/** Remove the gray background color from active links in IE 10. */
+a { background: transparent; }
+
+/** Address `outline` inconsistency between Chrome and other browsers. */
+a:focus { outline: thin dotted; }
+
+/** Improve readability when focused and also mouse hovered in all browsers. */
+a:active, a:hover { outline: 0; }
+
+/* ========================================================================== Typography ========================================================================== */
+/** Address variable `h1` font-size and margin within `section` and `article` contexts in Firefox 4+, Safari 5, and Chrome. */
+h1 { font-size: 2em; margin: 0.67em 0; }
+
+/** Address styling not present in IE 8/9, Safari 5, and Chrome. */
+abbr[title] { border-bottom: 1px dotted; }
+
+/** Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome. */
+b, strong { font-weight: bold; }
+
+/** Address styling not present in Safari 5 and Chrome. */
+dfn { font-style: italic; }
+
+/** Address differences between Firefox and other browsers. */
+hr { -moz-box-sizing: content-box; box-sizing: content-box; height: 0; }
+
+/** Address styling not present in IE 8/9. */
+mark { background: #ff0; color: #000; }
+
+/** Correct font family set oddly in Safari 5 and Chrome. */
+code, kbd, pre, samp { font-family: monospace, serif; font-size: 1em; }
+
+/** Improve readability of pre-formatted text in all browsers. */
+pre { white-space: pre-wrap; }
+
+/** Set consistent quote types. */
+q { quotes: "\201C" "\201D" "\2018" "\2019"; }
+
+/** Address inconsistent and variable font size in all browsers. */
+small { font-size: 80%; }
+
+/** Prevent `sub` and `sup` affecting `line-height` in all browsers. */
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+
+sup { top: -0.5em; }
+
+sub { bottom: -0.25em; }
+
+/* ========================================================================== Embedded content ========================================================================== */
+/** Remove border when inside `a` element in IE 8/9. */
+img { border: 0; }
+
+/** Correct overflow displayed oddly in IE 9. */
+svg:not(:root) { overflow: hidden; }
+
+/* ========================================================================== Figures ========================================================================== */
+/** Address margin not present in IE 8/9 and Safari 5. */
+figure { margin: 0; }
+
+/* ========================================================================== Forms ========================================================================== */
+/** Define consistent border, margin, and padding. */
+fieldset { border: 1px solid #c0c0c0; margin: 0 2px; padding: 0.35em 0.625em 0.75em; }
+
+/** 1. Correct `color` not being inherited in IE 8/9. 2. Remove padding so people aren't caught out if they zero out fieldsets. */
+legend { border: 0; /* 1 */ padding: 0; /* 2 */ }
+
+/** 1. Correct font family not being inherited in all browsers. 2. Correct font size not being inherited in all browsers. 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome. */
+button, input, select, textarea { font-family: inherit; /* 1 */ font-size: 100%; /* 2 */ margin: 0; /* 3 */ }
+
+/** Address Firefox 4+ setting `line-height` on `input` using `!important` in the UA stylesheet. */
+button, input { line-height: normal; }
+
+/** Address inconsistent `text-transform` inheritance for `button` and `select`. All other form control elements do not inherit `text-transform` values. Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+. Correct `select` style inheritance in Firefox 4+ and Opera. */
+button, select { text-transform: none; }
+
+/** 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio` and `video` controls. 2. Correct inability to style clickable `input` types in iOS. 3. Improve usability and consistency of cursor style between image-type `input` and others. */
+button, html input[type="button"], input[type="reset"], input[type="submit"] { -webkit-appearance: button; /* 2 */ cursor: pointer; /* 3 */ }
+
+/** Re-set default cursor for disabled elements. */
+button[disabled], html input[disabled] { cursor: default; }
+
+/** 1. Address box sizing set to `content-box` in IE 8/9. 2. Remove excess padding in IE 8/9. */
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; /* 1 */ padding: 0; /* 2 */ }
+
+/** 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome. 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome (include `-moz` to future-proof). */
+input[type="search"] { -webkit-appearance: textfield; /* 1 */ -moz-box-sizing: content-box; -webkit-box-sizing: content-box; /* 2 */ box-sizing: content-box; }
+
+/** Remove inner padding and search cancel button in Safari 5 and Chrome on OS X. */
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+
+/** Remove inner padding and border in Firefox 4+. */
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+
+/** 1. Remove default vertical scrollbar in IE 8/9. 2. Improve readability and alignment in all browsers. */
+textarea { overflow: auto; /* 1 */ vertical-align: top; /* 2 */ }
+
+/* ========================================================================== Tables ========================================================================== */
+/** Remove most spacing between table cells. */
+table { border-collapse: collapse; border-spacing: 0; }
+
+meta.foundation-mq-small { font-family: "only screen and (min-width: 768px)"; width: 768px; }
+
+meta.foundation-mq-medium { font-family: "only screen and (min-width:1280px)"; width: 1280px; }
+
+meta.foundation-mq-large { font-family: "only screen and (min-width:1440px)"; width: 1440px; }
+
+*, *:before, *:after { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+html, body { font-size: 100%; }
+
+body { background: white; color: rgba(0, 0, 0, 0.8); padding: 0; margin: 0; font-family: Georgia, "Times New Roman", Times, serif; font-weight: normal; font-style: normal; line-height: 1; position: relative; cursor: auto; }
+
+a:hover { cursor: pointer; }
+
+img, object, embed { max-width: 100%; height: auto; }
+
+object, embed { height: 100%; }
+
+img { -ms-interpolation-mode: bicubic; }
+
+#map_canvas img, #map_canvas embed, #map_canvas object, .map_canvas img, .map_canvas embed, .map_canvas object { max-width: none !important; }
+
+.left { float: left !important; }
+
+.right { float: right !important; }
+
+.text-left { text-align: left !important; }
+
+.text-right { text-align: right !important; }
+
+.text-center { text-align: center !important; }
+
+.text-justify { text-align: justify !important; }
+
+.hide { display: none; }
+
+.antialiased { -webkit-font-smoothing: antialiased; }
+
+img { display: inline-block; vertical-align: middle; }
+
+textarea { height: auto; min-height: 50px; }
+
+select { width: 100%; }
+
+object, svg { display: inline-block; vertical-align: middle; }
+
+.center { margin-left: auto; margin-right: auto; }
+
+.stretch { width: 100%; }
+
+p.lead { font-size: 1.21875em; line-height: 1.6; }
+
+.subheader, .admonitionblock td.content > .title, .audioblock > .title, .exampleblock > .title, .imageblock > .title, .listingblock > .title, .literalblock > .title, .stemblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, table.tableblock > .title, .verseblock > .title, .videoblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title { line-height: 1.45; color: #00234c; font-weight: normal; margin-top: 0; margin-bottom: 0.25em; }
+
+/* Typography resets */
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6, pre, form, p, blockquote, th, td { margin: 0; padding: 0; direction: ltr; }
+
+/* Default Link Styles */
+a { color: #2156a5; text-decoration: underline; line-height: inherit; }
+a:hover, a:focus { color: #1d4b8f; }
+a img { border: none; }
+
+/* Default paragraph styles */
+p { font-family: inherit; font-weight: normal; font-size: 1em; line-height: 1.6; margin-bottom: 1.25em; text-rendering: optimizeLegibility; }
+p aside { font-size: 0.875em; line-height: 1.35; font-style: italic; }
+
+/* Default header styles */
+h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { font-family: "Lucida Sans Unicode", "Lucida Grande", Helvetica, sans-serif; font-weight: 300; font-style: normal; color: #004698; text-rendering: optimizeLegibility; margin-top: 1em; margin-bottom: 0.5em; line-height: 1.0125em; }
+h1 small, h2 small, h3 small, #toctitle small, .sidebarblock > .content > .title small, h4 small, h5 small, h6 small { font-size: 60%; color: #3290ff; line-height: 0; }
+
+h1 { font-size: 2.125em; }
+
+h2 { font-size: 1.6875em; }
+
+h3, #toctitle, .sidebarblock > .content > .title { font-size: 1.375em; }
+
+h4 { font-size: 1.125em; }
+
+h5 { font-size: 1.125em; }
+
+h6 { font-size: 1em; }
+
+hr { border: solid #ddddd8; border-width: 1px 0 0; clear: both; margin: 1.25em 0 1.1875em; height: 0; }
+
+/* Helpful Typography Defaults */
+em, i { font-style: italic; line-height: inherit; }
+
+strong, b { font-weight: bold; line-height: inherit; }
+
+small { font-size: 60%; line-height: inherit; }
+
+code { font-family: "Lucida Console", Menlo, Consolas, monospace; font-weight: normal; color: rgba(0, 0, 0, 0.9); }
+
+/* Lists */
+ul, ol, dl { font-size: 1em; line-height: 1.6; margin-bottom: 1.25em; list-style-position: outside; font-family: inherit; }
+
+ul, ol { margin-left: 1.5em; }
+ul.no-bullet, ol.no-bullet { margin-left: 1.5em; }
+
+/* Unordered Lists */
+ul li ul, ul li ol { margin-left: 1.25em; margin-bottom: 0; font-size: 1em; /* Override nested font-size change */ }
+ul.square li ul, ul.circle li ul, ul.disc li ul { list-style: inherit; }
+ul.square { list-style-type: square; }
+ul.circle { list-style-type: circle; }
+ul.disc { list-style-type: disc; }
+ul.no-bullet { list-style: none; }
+
+/* Ordered Lists */
+ol li ul, ol li ol { margin-left: 1.25em; margin-bottom: 0; }
+
+/* Definition Lists */
+dl dt { margin-bottom: 0.3125em; font-weight: bold; }
+dl dd { margin-bottom: 1.25em; }
+
+/* Abbreviations */
+abbr, acronym { text-transform: uppercase; font-size: 90%; color: rgba(0, 0, 0, 0.8); border-bottom: 1px dotted #dddddd; cursor: help; }
+
+abbr { text-transform: none; }
+
+/* Blockquotes */
+blockquote { margin: 0 0 1.25em; padding: 0.5625em 1.25em 0 1.1875em; border-left: 1px solid #dddddd; }
+blockquote cite { display: block; font-size: 0.9375em; color: rgba(0, 0, 0, 0.6); }
+blockquote cite:before { content: "\2014 \0020"; }
+blockquote cite a, blockquote cite a:visited { color: rgba(0, 0, 0, 0.6); }
+
+blockquote, blockquote p { line-height: 1.6; color: rgba(0, 0, 0, 0.85); }
+
+/* Microformats */
+.vcard { display: inline-block; margin: 0 0 1.25em 0; border: 1px solid #dddddd; padding: 0.625em 0.75em; }
+.vcard li { margin: 0; display: block; }
+.vcard .fn { font-weight: bold; font-size: 0.9375em; }
+
+.vevent .summary { font-weight: bold; }
+.vevent abbr { cursor: auto; text-decoration: none; font-weight: bold; border: none; padding: 0 0.0625em; }
+
+@media only screen and (min-width: 768px) { h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { line-height: 1.2; }
+  h1 { font-size: 2.75em; }
+  h2 { font-size: 2.3125em; }
+  h3, #toctitle, .sidebarblock > .content > .title { font-size: 1.6875em; }
+  h4 { font-size: 1.4375em; } }
+/* Tables */
+table { background: white; margin-bottom: 1.25em; border: solid 1px #dedede; }
+table thead, table tfoot { background: #f7f8f7; font-weight: bold; }
+table thead tr th, table thead tr td, table tfoot tr th, table tfoot tr td { padding: 0.5em 0.625em 0.625em; font-size: inherit; color: rgba(0, 0, 0, 0.8); text-align: left; }
+table tr th, table tr td { padding: 0.5625em 0.625em; font-size: inherit; color: rgba(0, 0, 0, 0.8); }
+table tr.even, table tr.alt, table tr:nth-of-type(even) { background: #f8f8f7; }
+table thead tr th, table tfoot tr th, table tbody tr td, table tr td, table tfoot tr td { display: table-cell; line-height: 1.6; }
+
+body { -moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased; tab-size: 4; }
+
+h1, h2, h3, #toctitle, .sidebarblock > .content > .title, h4, h5, h6 { line-height: 1.2; word-spacing: -0.05em; }
+h1 strong, h2 strong, h3 strong, #toctitle strong, .sidebarblock > .content > .title strong, h4 strong, h5 strong, h6 strong { font-weight: 400; }
+
+.clearfix:before, .clearfix:after, .float-group:before, .float-group:after { content: " "; display: table; }
+.clearfix:after, .float-group:after { clear: both; }
+
+:not(pre):not([class^=L]) > code { font-size: 0.9375em; font-style: normal !important; letter-spacing: 0; padding: 0.1em 0.5ex; word-spacing: -0.15em; background-color: #f7f7f8; -webkit-border-radius: 4px; border-radius: 4px; line-height: 1.45; text-rendering: optimizeSpeed; word-wrap: break-word; }
+
+:not(pre) > code.nobreak { word-wrap: normal; }
+:not(pre) > code.nowrap { white-space: nowrap; }
+
+pre { color: rgba(0, 0, 0, 0.9); font-family: "Lucida Console", Menlo, Consolas, monospace; line-height: 1.45; text-rendering: optimizeSpeed; }
+pre code, pre pre { color: inherit; font-size: inherit; line-height: inherit; }
+pre > code { display: block; }
+
+pre.nowrap, pre.nowrap pre { white-space: pre; word-wrap: normal; }
+
+em em { font-style: normal; }
+
+strong strong { font-weight: normal; }
+
+.keyseq { color: rgba(51, 51, 51, 0.8); }
+
+kbd { font-family: "Lucida Console", Menlo, Consolas, monospace; display: inline-block; color: rgba(0, 0, 0, 0.8); font-size: 0.65em; line-height: 1.45; background-color: #f7f7f7; border: 1px solid #ccc; -webkit-border-radius: 3px; border-radius: 3px; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 0.1em white inset; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 0.1em white inset; margin: 0 0.15em; padding: 0.2em 0.5em; vertical-align: middle; position: relative; top: -0.1em; white-space: nowrap; }
+
+.keyseq kbd:first-child { margin-left: 0; }
+
+.keyseq kbd:last-child { margin-right: 0; }
+
+.menuseq, .menuref { color: #000; }
+
+.menuseq b:not(.caret), .menuref { font-weight: inherit; }
+
+.menuseq { word-spacing: -0.02em; }
+.menuseq b.caret { font-size: 1.25em; line-height: 0.8; }
+.menuseq i.caret { font-weight: bold; text-align: center; width: 0.45em; }
+
+b.button:before, b.button:after { position: relative; top: -1px; font-weight: normal; }
+
+b.button:before { content: "["; padding: 0 3px 0 2px; }
+
+b.button:after { content: "]"; padding: 0 2px 0 3px; }
+
+p a > code:hover { color: rgba(0, 0, 0, 0.9); }
+
+#header, #content, #footnotes, #footer { width: 100%; margin-left: auto; margin-right: auto; margin-top: 0; margin-bottom: 0; max-width: 62.5em; *zoom: 1; position: relative; padding-left: 0.9375em; padding-right: 0.9375em; }
+#header:before, #header:after, #content:before, #content:after, #footnotes:before, #footnotes:after, #footer:before, #footer:after { content: " "; display: table; }
+#header:after, #content:after, #footnotes:after, #footer:after { clear: both; }
+
+#content { margin-top: 1.25em; }
+
+#content:before { content: none; }
+
+#header > h1:first-child { color: rgba(0, 0, 0, 0.85); margin-top: 2.25rem; margin-bottom: 0; }
+#header > h1:first-child + #toc { margin-top: 8px; border-top: 1px solid #ddddd8; }
+#header > h1:only-child, body.toc2 #header > h1:nth-last-child(2) { border-bottom: 1px solid #ddddd8; padding-bottom: 8px; }
+#header .details { border-bottom: 1px solid #ddddd8; line-height: 1.45; padding-top: 0.25em; padding-bottom: 0.25em; padding-left: 0.25em; color: rgba(0, 0, 0, 0.6); display: -ms-flexbox; display: -webkit-flex; display: flex; -ms-flex-flow: row wrap; -webkit-flex-flow: row wrap; flex-flow: row wrap; }
+#header .details span:first-child { margin-left: -0.125em; }
+#header .details span.email a { color: rgba(0, 0, 0, 0.85); }
+#header .details br { display: none; }
+#header .details br + span:before { content: "\00a0\2013\00a0"; }
+#header .details br + span.author:before { content: "\00a0\22c5\00a0"; color: rgba(0, 0, 0, 0.85); }
+#header .details br + span#revremark:before { content: "\00a0|\00a0"; }
+#header #revnumber { text-transform: capitalize; }
+#header #revnumber:after { content: "\00a0"; }
+
+#content > h1:first-child:not([class]) { color: rgba(0, 0, 0, 0.85); border-bottom: 1px solid #ddddd8; padding-bottom: 8px; margin-top: 0; padding-top: 1rem; margin-bottom: 1.25rem; }
+
+#toc { border-bottom: 1px solid #efefed; padding-bottom: 0.5em; }
+#toc > ul { margin-left: 0.125em; }
+#toc ul.sectlevel0 > li > a { font-style: italic; }
+#toc ul.sectlevel0 ul.sectlevel1 { margin: 0.5em 0; }
+#toc ul { font-family: "Lucida Sans Unicode", "Lucida Grande", Helvetica, sans-serif; list-style-type: none; }
+#toc li { line-height: 1.3334; margin-top: 0.3334em; }
+#toc a { text-decoration: none; }
+#toc a:active { text-decoration: underline; }
+
+#toctitle { color: #00234c; font-size: 1.2em; }
+
+@media only screen and (min-width: 768px) { #toctitle { font-size: 1.375em; }
+  body.toc2 { padding-left: 15em; padding-right: 0; }
+  #toc.toc2 { margin-top: 0 !important; background: #f8f8f7; position: fixed; width: 15em; left: 0; top: 0; border-right: 1px solid #efefed; border-top-width: 0 !important; border-bottom-width: 0 !important; z-index: 1000; padding: 1.25em 1em; height: 100%; overflow: auto; }
+  #toc.toc2 #toctitle { margin-top: 0; margin-bottom: 0.8rem; font-size: 1.2em; }
+  #toc.toc2 > ul { font-size: 0.9em; margin-bottom: 0; }
+  #toc.toc2 ul ul { margin-left: 0; padding-left: 1em; }
+  #toc.toc2 ul.sectlevel0 ul.sectlevel1 { padding-left: 0; margin-top: 0.5em; margin-bottom: 0.5em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 15em; }
+  body.toc2.toc-right #toc.toc2 { border-right-width: 0; border-left: 1px solid #efefed; left: auto; right: 0; } }
+@media only screen and (min-width: 1280px) { body.toc2 { padding-left: 20em; padding-right: 0; }
+  #toc.toc2 { width: 20em; }
+  #toc.toc2 #toctitle { font-size: 1.375em; }
+  #toc.toc2 > ul { font-size: 0.95em; }
+  #toc.toc2 ul ul { padding-left: 1.25em; }
+  body.toc2.toc-right { padding-left: 0; padding-right: 20em; } }
+#content #toc { border-style: solid; border-width: 1px; border-color: #e0e0dc; margin-bottom: 1.25em; padding: 1.25em; background: #f8f8f7; -webkit-border-radius: 4px; border-radius: 4px; }
+#content #toc > :first-child { margin-top: 0; }
+#content #toc > :last-child { margin-bottom: 0; }
+
+#footer { max-width: 100%; background: rgba(0, 0, 0, 0.8); padding: 1.25em; }
+
+#footer-text { color: rgba(255, 255, 255, 0.8); line-height: 1.44; }
+
+#content { margin-bottom: 0.625em; }
+
+.sect1 { padding-bottom: 0.625em; }
+
+@media only screen and (min-width: 768px) { #content { margin-bottom: 1.25em; }
+  .sect1 { padding-bottom: 1.25em; } }
+.sect1:last-child { padding-bottom: 0; }
+
+.sect1 + .sect1 { border-top: 1px solid #efefed; }
+
+#content h1 > a.anchor, h2 > a.anchor, h3 > a.anchor, #toctitle > a.anchor, .sidebarblock > .content > .title > a.anchor, h4 > a.anchor, h5 > a.anchor, h6 > a.anchor { position: absolute; z-index: 1001; width: 1.5ex; margin-left: -1.5ex; display: block; text-decoration: none !important; visibility: hidden; text-align: center; font-weight: normal; }
+#content h1 > a.anchor:before, h2 > a.anchor:before, h3 > a.anchor:before, #toctitle > a.anchor:before, .sidebarblock > .content > .title > a.anchor:before, h4 > a.anchor:before, h5 > a.anchor:before, h6 > a.anchor:before { content: "\00A7"; font-size: 0.85em; display: block; padding-top: 0.1em; }
+#content h1:hover > a.anchor, #content h1 > a.anchor:hover, h2:hover > a.anchor, h2 > a.anchor:hover, h3:hover > a.anchor, #toctitle:hover > a.anchor, .sidebarblock > .content > .title:hover > a.anchor, h3 > a.anchor:hover, #toctitle > a.anchor:hover, .sidebarblock > .content > .title > a.anchor:hover, h4:hover > a.anchor, h4 > a.anchor:hover, h5:hover > a.anchor, h5 > a.anchor:hover, h6:hover > a.anchor, h6 > a.anchor:hover { visibility: visible; }
+#content h1 > a.link, h2 > a.link, h3 > a.link, #toctitle > a.link, .sidebarblock > .content > .title > a.link, h4 > a.link, h5 > a.link, h6 > a.link { color: #004698; text-decoration: none; }
+#content h1 > a.link:hover, h2 > a.link:hover, h3 > a.link:hover, #toctitle > a.link:hover, .sidebarblock > .content > .title > a.link:hover, h4 > a.link:hover, h5 > a.link:hover, h6 > a.link:hover { color: #003a7f; }
+
+details, .audioblock, .imageblock, .literalblock, .listingblock, .stemblock, .videoblock { margin-bottom: 1.25em; }
+
+details > summary:first-of-type { cursor: pointer; display: list-item; outline: none; margin-bottom: 0.75em; }
+
+.admonitionblock td.content > .title, .audioblock > .title, .exampleblock > .title, .imageblock > .title, .listingblock > .title, .literalblock > .title, .stemblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, table.tableblock > .title, .verseblock > .title, .videoblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title { text-rendering: optimizeLegibility; text-align: left; font-family: Georgia, "Times New Roman", Times, serif; font-size: 1rem; font-style: italic; }
+
+table.tableblock.fit-content > caption.title { white-space: nowrap; width: 0; }
+
+.paragraph.lead > p, #preamble > .sectionbody > [class="paragraph"]:first-of-type p { font-size: 1.21875em; line-height: 1.6; color: rgba(0, 0, 0, 0.85); }
+
+table.tableblock #preamble > .sectionbody > [class="paragraph"]:first-of-type p { font-size: inherit; }
+
+.admonitionblock > table { border-collapse: separate; border: 0; background: none; width: 100%; }
+.admonitionblock > table td.icon { text-align: center; width: 80px; }
+.admonitionblock > table td.icon img { max-width: none; }
+.admonitionblock > table td.icon .title { font-weight: bold; font-family: "Lucida Sans Unicode", "Lucida Grande", Helvetica, sans-serif; text-transform: uppercase; }
+.admonitionblock > table td.content { padding-left: 1.125em; padding-right: 1.25em; border-left: 1px solid #ddddd8; color: rgba(0, 0, 0, 0.6); }
+.admonitionblock > table td.content > :last-child > :last-child { margin-bottom: 0; }
+
+.exampleblock > .content { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.25em; padding: 1.25em; background: white; -webkit-border-radius: 4px; border-radius: 4px; }
+.exampleblock > .content > :first-child { margin-top: 0; }
+.exampleblock > .content > :last-child { margin-bottom: 0; }
+
+.sidebarblock { border-style: solid; border-width: 1px; border-color: #dbdbd6; margin-bottom: 1.25em; padding: 1.25em; background: #f3f3f2; -webkit-border-radius: 4px; border-radius: 4px; }
+.sidebarblock > :first-child { margin-top: 0; }
+.sidebarblock > :last-child { margin-bottom: 0; }
+.sidebarblock > .content > .title { color: #00234c; margin-top: 0; text-align: center; }
+
+.exampleblock > .content > :last-child > :last-child, .exampleblock > .content .olist > ol > li:last-child > :last-child, .exampleblock > .content .ulist > ul > li:last-child > :last-child, .exampleblock > .content .qlist > ol > li:last-child > :last-child, .sidebarblock > .content > :last-child > :last-child, .sidebarblock > .content .olist > ol > li:last-child > :last-child, .sidebarblock > .content .ulist > ul > li:last-child > :last-child, .sidebarblock > .content .qlist > ol > li:last-child > :last-child { margin-bottom: 0; }
+
+.literalblock pre, .listingblock > .content > pre { -webkit-border-radius: 4px; border-radius: 4px; word-wrap: break-word; overflow-x: auto; padding: 1em; font-size: 0.8125em; }
+@media only screen and (min-width: 768px) { .literalblock pre, .listingblock > .content > pre { font-size: 0.90625em; } }
+@media only screen and (min-width: 1280px) { .literalblock pre, .listingblock > .content > pre { font-size: 1em; } }
+
+.literalblock pre, .listingblock > .content > pre:not(.highlight), .listingblock > .content > pre[class="highlight"], .listingblock > .content > pre[class^="highlight "] { background: #f7f7f8; }
+
+.literalblock.output pre { color: #f7f7f8; background-color: rgba(0, 0, 0, 0.9); }
+
+.listingblock > .content { position: relative; }
+
+.listingblock code[data-lang]:before { display: none; content: attr(data-lang); position: absolute; font-size: 0.75em; top: 0.425rem; right: 0.5rem; line-height: 1; text-transform: uppercase; color: inherit; opacity: 0.5; }
+
+.listingblock:hover code[data-lang]:before { display: block; }
+
+.listingblock.terminal pre .command:before { content: attr(data-prompt); padding-right: 0.5em; color: inherit; opacity: 0.5; }
+
+.listingblock.terminal pre .command:not([data-prompt]):before { content: "$"; }
+
+.listingblock pre.highlightjs { padding: 0; }
+.listingblock pre.highlightjs > code { padding: 1em; -webkit-border-radius: 4px; border-radius: 4px; }
+
+.listingblock pre.prettyprint { border-width: 0; }
+
+.prettyprint { background: #f7f7f8; }
+
+pre.prettyprint .linenums { line-height: 1.45; margin-left: 2em; }
+
+pre.prettyprint li { background: none; list-style-type: inherit; padding-left: 0; }
+
+pre.prettyprint li code[data-lang]:before { opacity: 1; }
+
+pre.prettyprint li:not(:first-child) code[data-lang]:before { display: none; }
+
+table.linenotable { border-collapse: separate; border: 0; margin-bottom: 0; background: none; }
+table.linenotable td[class] { color: inherit; vertical-align: top; padding: 0; line-height: inherit; white-space: normal; }
+table.linenotable td.code { padding-left: 0.75em; }
+table.linenotable td.linenos { border-right: 1px solid currentColor; opacity: 0.35; padding-right: 0.5em; }
+
+pre.pygments .lineno { border-right: 1px solid currentColor; opacity: 0.35; display: inline-block; margin-right: 0.75em; }
+pre.pygments .lineno:before { content: ""; margin-right: -0.125em; }
+
+.quoteblock { margin: 0 1em 1.25em 1.5em; display: table; }
+.quoteblock:not(.excerpt) > .title { margin-left: -1.5em; margin-bottom: 0.75em; }
+.quoteblock blockquote, .quoteblock p { color: rgba(0, 0, 0, 0.85); font-size: 1.15rem; line-height: 1.75; word-spacing: 0.1em; letter-spacing: 0; font-style: italic; text-align: justify; }
+.quoteblock blockquote { margin: 0; padding: 0; border: 0; }
+.quoteblock blockquote:before { content: "\201c"; float: left; font-size: 2.75em; font-weight: bold; line-height: 0.6em; margin-left: -0.6em; color: #00234c; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
+.quoteblock blockquote > .paragraph:last-child p { margin-bottom: 0; }
+.quoteblock .attribution { margin-top: 0.75em; margin-right: 0.5ex; text-align: right; }
+
+.verseblock { margin: 0 1em 1.25em 1em; }
+.verseblock pre { font-family: "Open Sans", "DejaVu Sans", sans; font-size: 1.15rem; color: rgba(0, 0, 0, 0.85); font-weight: 300; text-rendering: optimizeLegibility; }
+.verseblock pre strong { font-weight: 400; }
+.verseblock .attribution { margin-top: 1.25rem; margin-left: 0.5ex; }
+
+.quoteblock .attribution, .verseblock .attribution { font-size: 0.9375em; line-height: 1.45; font-style: italic; }
+.quoteblock .attribution br, .verseblock .attribution br { display: none; }
+.quoteblock .attribution cite, .verseblock .attribution cite { display: block; letter-spacing: -0.025em; color: rgba(0, 0, 0, 0.6); }
+
+.quoteblock.abstract blockquote:before, .quoteblock.excerpt blockquote:before, .quoteblock .quoteblock blockquote:before { display: none; }
+.quoteblock.abstract blockquote, .quoteblock.abstract p, .quoteblock.excerpt blockquote, .quoteblock.excerpt p, .quoteblock .quoteblock blockquote, .quoteblock .quoteblock p { line-height: 1.6; word-spacing: 0; }
+.quoteblock.abstract { margin: 0 1em 1.25em 1em; display: block; }
+.quoteblock.abstract > .title { margin: 0 0 0.375em 0; font-size: 1.15em; text-align: center; }
+.quoteblock.excerpt > blockquote, .quoteblock .quoteblock { padding: 0 0 0.25em 1em; border-left: 0.25em solid #ddddd8; }
+.quoteblock.excerpt, .quoteblock .quoteblock { margin-left: 0; }
+.quoteblock.excerpt blockquote, .quoteblock.excerpt p, .quoteblock .quoteblock blockquote, .quoteblock .quoteblock p { color: inherit; font-size: 1.0625rem; }
+.quoteblock.excerpt .attribution, .quoteblock .quoteblock .attribution { color: inherit; text-align: left; margin-right: 0; }
+
+table.tableblock { max-width: 100%; border-collapse: separate; }
+
+p.tableblock:last-child { margin-bottom: 0; }
+
+td.tableblock > .content { margin-bottom: 1.25em; }
+td.tableblock > .content > :last-child { margin-bottom: -1.25em; }
+
+table.tableblock, th.tableblock, td.tableblock { border: 0 solid #dedede; }
+
+table.grid-all > thead > tr > .tableblock, table.grid-all > tbody > tr > .tableblock { border-width: 0 1px 1px 0; }
+
+table.grid-all > tfoot > tr > .tableblock { border-width: 1px 1px 0 0; }
+
+table.grid-cols > * > tr > .tableblock { border-width: 0 1px 0 0; }
+
+table.grid-rows > thead > tr > .tableblock, table.grid-rows > tbody > tr > .tableblock { border-width: 0 0 1px 0; }
+
+table.grid-rows > tfoot > tr > .tableblock { border-width: 1px 0 0 0; }
+
+table.grid-all > * > tr > .tableblock:last-child, table.grid-cols > * > tr > .tableblock:last-child { border-right-width: 0; }
+
+table.grid-all > tbody > tr:last-child > .tableblock, table.grid-all > thead:last-child > tr > .tableblock, table.grid-rows > tbody > tr:last-child > .tableblock, table.grid-rows > thead:last-child > tr > .tableblock { border-bottom-width: 0; }
+
+table.frame-all { border-width: 1px; }
+
+table.frame-sides { border-width: 0 1px; }
+
+table.frame-topbot, table.frame-ends { border-width: 1px 0; }
+
+table.stripes-all tr, table.stripes-odd tr:nth-of-type(odd), table.stripes-even tr:nth-of-type(even), table.stripes-hover tr:hover { background: #f8f8f7; }
+
+th.halign-left, td.halign-left { text-align: left; }
+
+th.halign-right, td.halign-right { text-align: right; }
+
+th.halign-center, td.halign-center { text-align: center; }
+
+th.valign-top, td.valign-top { vertical-align: top; }
+
+th.valign-bottom, td.valign-bottom { vertical-align: bottom; }
+
+th.valign-middle, td.valign-middle { vertical-align: middle; }
+
+table thead th, table tfoot th { font-weight: bold; }
+
+tbody tr th { display: table-cell; line-height: 1.6; background: #f7f8f7; }
+
+tbody tr th, tbody tr th p, tfoot tr th, tfoot tr th p { color: rgba(0, 0, 0, 0.8); font-weight: bold; }
+
+p.tableblock > code:only-child { background: none; padding: 0; }
+
+p.tableblock { font-size: 1em; }
+
+ol { margin-left: 1.75em; }
+
+ul li ol { margin-left: 1.5em; }
+
+dl dd { margin-left: 1.125em; }
+
+dl dd:last-child, dl dd:last-child > :last-child { margin-bottom: 0; }
+
+ol > li p, ul > li p, ul dd, ol dd, .olist .olist, .ulist .ulist, .ulist .olist, .olist .ulist { margin-bottom: 0.625em; }
+
+ul.checklist, ul.none, ol.none, ul.no-bullet, ol.no-bullet, ol.unnumbered, ul.unstyled, ol.unstyled { list-style-type: none; }
+
+ul.no-bullet, ol.no-bullet, ol.unnumbered { margin-left: 0.625em; }
+
+ul.unstyled, ol.unstyled { margin-left: 0; }
+
+ul.checklist { margin-left: 0.625em; }
+
+ul.checklist li > p:first-child > .fa-square-o:first-child, ul.checklist li > p:first-child > .fa-check-square-o:first-child { width: 1.25em; font-size: 0.8em; position: relative; bottom: 0.125em; }
+
+ul.checklist li > p:first-child > input[type="checkbox"]:first-child { margin-right: 0.25em; }
+
+ul.inline { display: -ms-flexbox; display: -webkit-box; display: flex; -ms-flex-flow: row wrap; -webkit-flex-flow: row wrap; flex-flow: row wrap; list-style: none; margin: 0 0 0.625em -1.25em; }
+
+ul.inline > li { margin-left: 1.25em; }
+
+.unstyled dl dt { font-weight: normal; font-style: normal; }
+
+ol.arabic { list-style-type: decimal; }
+
+ol.decimal { list-style-type: decimal-leading-zero; }
+
+ol.loweralpha { list-style-type: lower-alpha; }
+
+ol.upperalpha { list-style-type: upper-alpha; }
+
+ol.lowerroman { list-style-type: lower-roman; }
+
+ol.upperroman { list-style-type: upper-roman; }
+
+ol.lowergreek { list-style-type: lower-greek; }
+
+.hdlist > table, .colist > table { border: 0; background: none; }
+.hdlist > table > tbody > tr, .colist > table > tbody > tr { background: none; }
+
+td.hdlist1, td.hdlist2 { vertical-align: top; padding: 0 0.625em; }
+
+td.hdlist1 { font-weight: bold; padding-bottom: 1.25em; }
+
+.literalblock + .colist, .listingblock + .colist { margin-top: -0.5em; }
+
+.colist td:not([class]):first-child { padding: 0.4em 0.75em 0 0.75em; line-height: 1; vertical-align: top; }
+.colist td:not([class]):first-child img { max-width: none; }
+.colist td:not([class]):last-child { padding: 0.25em 0; }
+
+.thumb, .th { line-height: 0; display: inline-block; border: solid 4px white; -webkit-box-shadow: 0 0 0 1px #dddddd; box-shadow: 0 0 0 1px #dddddd; }
+
+.imageblock.left { margin: 0.25em 0.625em 1.25em 0; }
+.imageblock.right { margin: 0.25em 0 1.25em 0.625em; }
+.imageblock > .title { margin-bottom: 0; }
+.imageblock.thumb, .imageblock.th { border-width: 6px; }
+.imageblock.thumb > .title, .imageblock.th > .title { padding: 0 0.125em; }
+
+.image.left, .image.right { margin-top: 0.25em; margin-bottom: 0.25em; display: inline-block; line-height: 0; }
+.image.left { margin-right: 0.625em; }
+.image.right { margin-left: 0.625em; }
+
+a.image { text-decoration: none; display: inline-block; }
+a.image object { pointer-events: none; }
+
+sup.footnote, sup.footnoteref { font-size: 0.875em; position: static; vertical-align: super; }
+sup.footnote a, sup.footnoteref a { text-decoration: none; }
+sup.footnote a:active, sup.footnoteref a:active { text-decoration: underline; }
+
+#footnotes { padding-top: 0.75em; padding-bottom: 0.75em; margin-bottom: 0.625em; }
+#footnotes hr { width: 20%; min-width: 6.25em; margin: -0.25em 0 0.75em 0; border-width: 1px 0 0 0; }
+#footnotes .footnote { padding: 0 0.375em 0 0.225em; line-height: 1.3334; font-size: 0.875em; margin-left: 1.2em; margin-bottom: 0.2em; }
+#footnotes .footnote a:first-of-type { font-weight: bold; text-decoration: none; margin-left: -1.05em; }
+#footnotes .footnote:last-of-type { margin-bottom: 0; }
+#content #footnotes { margin-top: -0.625em; margin-bottom: 0; padding: 0.75em 0; }
+
+.gist .file-data > table { border: 0; background: #fff; width: 100%; margin-bottom: 0; }
+.gist .file-data > table td.line-data { width: 99%; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+.big { font-size: larger; }
+
+.small { font-size: smaller; }
+
+.underline { text-decoration: underline; }
+
+.overline { text-decoration: overline; }
+
+.line-through { text-decoration: line-through; }
+
+.aqua { color: #00bfbf; }
+
+.aqua-background { background-color: #00fafa; }
+
+.black { color: black; }
+
+.black-background { background-color: black; }
+
+.blue { color: #0000bf; }
+
+.blue-background { background-color: #0000fa; }
+
+.fuchsia { color: #bf00bf; }
+
+.fuchsia-background { background-color: #fa00fa; }
+
+.gray { color: #606060; }
+
+.gray-background { background-color: #7d7d7d; }
+
+.green { color: #006000; }
+
+.green-background { background-color: #007d00; }
+
+.lime { color: #00bf00; }
+
+.lime-background { background-color: #00fa00; }
+
+.maroon { color: #600000; }
+
+.maroon-background { background-color: #7d0000; }
+
+.navy { color: #000060; }
+
+.navy-background { background-color: #00007d; }
+
+.olive { color: #606000; }
+
+.olive-background { background-color: #7d7d00; }
+
+.purple { color: #600060; }
+
+.purple-background { background-color: #7d007d; }
+
+.red { color: #bf0000; }
+
+.red-background { background-color: #fa0000; }
+
+.silver { color: #909090; }
+
+.silver-background { background-color: #bcbcbc; }
+
+.teal { color: #006060; }
+
+.teal-background { background-color: #007d7d; }
+
+.white { color: #bfbfbf; }
+
+.white-background { background-color: #fafafa; }
+
+.yellow { color: #bfbf00; }
+
+.yellow-background { background-color: #fafa00; }
+
+body { max-width: 250mm; margin-left: auto; margin-right: auto; }
+
+@media only screen and (min-width: 768px) { h1 { font-size: 2em; }
+  h2 { font-size: 1.8em; }
+  h3, #toctitle, .sidebarblock > .content > .title, #toctitle, .sidebarblock > .content > .title { font-size: 1.6em; }
+  h4 { font-size: 1.2em; }
+  h5 { font-size: 1.1em; } }
+dt, th.tableblock, td.content, div.footnote { text-rendering: optimizeLegibility; }
+
+h1, h2, p, td.content, span.alt { letter-spacing: -0.01em; }
+
+p strong, td.content strong, div.footnote strong { letter-spacing: -0.005em; }
+
+p, blockquote, dt, td.content, span.alt { font-size: 1.0625rem; }
+
+p, pre { margin-bottom: 1.25rem; }
+
+.sidebarblock p, .sidebarblock dt, .sidebarblock td.content, p.tableblock { font-size: 1em; }
+
+.exampleblock > .content { background-color: #fffef7; border-color: #e0e0dc; -webkit-box-shadow: 0 1px 4px #e0e0dc; box-shadow: 0 1px 4px #e0e0dc; }
+
+.guimenu, .guisubmenu, .guimenuitem { padding: .1em .3em .1em .3em; border: 0.5px rgba(0, 0, 0, 0.5) solid; }
+
+.guibutton { padding: .1em .3em .1em .3em; border: 0.5px rgba(0, 0, 0, 0.5) solid; border-radius: 4px; }
+
+.keycap { padding: .1em .3em .1em .3em; border: 0.5px rgba(0, 0, 0, 0.5) solid; box-shadow: 1px 1px rgba(0, 0, 0, 0.2); border-radius: 4px; display: inline-block; min-width: 1.5em; text-align: center; }
+
+.print-only { display: none !important; }
+
+@page { margin: 1.25cm 0.75cm; }
+
+@media print { * { -webkit-box-shadow: none !important; box-shadow: none !important; text-shadow: none !important; }
+  body { max-width: default; }
+  html { font-size: 80%; }
+  a { color: inherit !important; text-decoration: underline !important; }
+  a.bare, a[href^="#"], a[href^="mailto:"] { text-decoration: none !important; }
+  a[href^="http:"]:not(.bare):after, a[href^="https:"]:not(.bare):after { content: "(" attr(href) ")"; display: inline-block; font-size: 0.875em; padding-left: 0.25em; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  pre, blockquote, tr, img, object, svg { page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  svg { max-width: 100%; }
+  p, blockquote, dt, td.content { font-size: 1em; orphans: 3; widows: 3; }
+  h2, h3, #toctitle, .sidebarblock > .content > .title, #toctitle, .sidebarblock > .content > .title { page-break-after: avoid; }
+  #toc, .sidebarblock, .exampleblock > .content { background: none !important; }
+  #toc { border-bottom: 1px solid #ddddd8 !important; padding-bottom: 0 !important; }
+  body.book #header { text-align: center; }
+  body.book #header > h1:first-child { border: 0 !important; margin: 2.5em 0 1em 0; }
+  body.book #header .details { border: 0 !important; display: block; padding: 0 !important; }
+  body.book #header .details span:first-child { margin-left: 0 !important; }
+  body.book #header .details br { display: block; }
+  body.book #header .details br + span:before { content: none !important; }
+  body.book #toc { border: 0 !important; text-align: left !important; padding: 0 !important; margin: 0 !important; }
+  body.book #toc, body.book #preamble, body.book h1.sect0, body.book .sect1 > h2 { page-break-before: always; }
+  .listingblock code[data-lang]:before { display: block; }
+  #footer { padding: 0 0.9375em; }
+  .hide-on-print { display: none !important; }
+  .print-only { display: block !important; }
+  .hide-for-print { display: none !important; }
+  .show-for-print { display: inherit !important; } }
+@media print, amzn-kf8 { #header > h1:first-child { margin-top: 1.25rem; }
+  .sect1 { padding: 0 !important; }
+  .sect1 + .sect1 { border: 0; }
+  #footer { background: none; }
+  #footer-text { color: rgba(0, 0, 0, 0.6); font-size: 0.9em; } }
+@media amzn-kf8 { #header, #content, #footnotes, #footer { padding: 0; } }
+
+</style>
+</head>
+<body class="article">
+<div id="header">
+<h1>Wireshark Frequently Asked Questions</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_general_questions">General Questions</a>
+<ul class="sectlevel2">
+<li><a href="#_what_is_wireshark">What is Wireshark?</a></li>
+<li><a href="#_whats_up_with_the_name_change_is_wireshark_a_fork">What&#8217;s up with the name change? Is Wireshark a fork?</a></li>
+<li><a href="#_where_can_i_get_help">Where can I get help?</a></li>
+<li><a href="#_what_kind_of_shark_is_wireshark">What kind of shark is Wireshark?</a></li>
+<li><a href="#_how_is_wireshark_pronounced_spelled_and_capitalized">How is Wireshark pronounced, spelled and capitalized?</a></li>
+<li><a href="#_how_much_does_wireshark_cost">How much does Wireshark cost?</a></li>
+<li><a href="#_but_i_just_paid_someone_on_ebay_for_a_copy_of_wireshark_did_i_get_ripped_off">But I just paid someone on eBay for a copy of Wireshark! Did I get ripped off?</a></li>
+<li><a href="#_can_i_use_wireshark_commercially">Can I use Wireshark commercially?</a></li>
+<li><a href="#_can_i_use_wireshark_as_part_of_my_commercial_product">Can I use Wireshark as part of my commercial product?</a></li>
+<li><a href="#_what_protocols_are_currently_supported">What protocols are currently supported?</a></li>
+<li><a href="#_are_there_any_plans_to_support_your_favorite_protocol">Are there any plans to support {your favorite protocol}?</a></li>
+<li><a href="#_can_wireshark_read_capture_files_from_your_favorite_network_analyzer">Can Wireshark read capture files from {your favorite network analyzer}?</a></li>
+<li><a href="#_what_devices_can_wireshark_use_to_capture_packets">What devices can Wireshark use to capture packets?</a></li>
+<li><a href="#_does_wireshark_work_on_older_versions_of_windows_such_as_windows_7">Does Wireshark work on older versions of Windows such as Windows 7?</a></li>
+</ul>
+</li>
+<li><a href="#_installing_wireshark">Installing Wireshark</a>
+<ul class="sectlevel2">
+<li><a href="#_i_installed_the_wireshark_rpm_or_other_package_why_did_it_install_tshark_but_not_wireshark">I installed the Wireshark RPM (or other package); why did it install TShark but not Wireshark?</a></li>
+</ul>
+</li>
+<li><a href="#_building_wireshark">Building Wireshark</a>
+<ul class="sectlevel2">
+<li><a href="#_why_does_building_wireshark_fail_due_to_missing_headers_h_files">Why does building Wireshark fail due to missing headers (.h files)?</a></li>
+</ul>
+</li>
+<li><a href="#_crashes_and_other_fatal_errors">Crashes and other fatal errors</a>
+<ul class="sectlevel2">
+<li><a href="#_i_have_an_xxx_network_card_on_my_machine_if_i_try_to_capture_on_it_why_does_my_machine_crash_or_reset_itself">I have an <em>XXX</em> network card on my machine; if I try to capture on it, why does my machine crash or reset itself?</a></li>
+<li><a href="#_why_does_my_machine_crash_or_reset_itself_when_i_select_start_from_the_capture_menu_or_select_preferences_from_the_edit_menu">Why does my machine crash or reset itself when I select "Start" from the "Capture" menu or select "Preferences" from the "Edit" menu?</a></li>
+</ul>
+</li>
+<li><a href="#_capturing_packets">Capturing packets</a>
+<ul class="sectlevel2">
+<li><a href="#promiscsniff">When I use Wireshark to capture packets, why do I see only packets to and from my machine, or not see all the traffic I&#8217;m expecting to see from or to the machine I&#8217;m trying to monitor?</a></li>
+<li><a href="#_when_i_capture_with_wireshark_why_cant_i_see_any_tcp_packets_other_than_packets_to_and_from_my_machine_even_though_another_analyzer_on_the_network_sees_those_packets">When I capture with Wireshark, why can&#8217;t I see any TCP packets other than packets to and from my machine, even though another analyzer on the network sees those packets?</a></li>
+<li><a href="#_why_am_i_only_seeing_arp_packets_when_i_try_to_capture_traffic">Why am I only seeing ARP packets when I try to capture traffic?</a></li>
+<li><a href="#_why_am_i_not_seeing_any_traffic_when_i_try_to_capture_traffic">Why am I not seeing any traffic when I try to capture traffic?</a></li>
+<li><a href="#_how_do_i_put_an_interface_into_promiscuous_mode">How do I put an interface into promiscuous mode?</a></li>
+<li><a href="#_i_can_set_a_display_filter_just_fine_why_dont_capture_filters_work">I can set a display filter just fine; why don&#8217;t capture filters work?</a></li>
+<li><a href="#_how_can_i_capture_packets_with_crc_errors">How can I capture packets with CRC errors?</a></li>
+<li><a href="#_how_can_i_capture_entire_frames_including_the_fcs">How can I capture entire frames, including the FCS?</a></li>
+<li><a href="#_im_capturing_packets_on_a_machine_on_a_vlan_why_dont_the_packets_im_capturing_have_vlan_tags">I&#8217;m capturing packets on a machine on a VLAN; why don&#8217;t the packets I&#8217;m capturing have VLAN tags?</a></li>
+<li><a href="#_why_does_wireshark_hang_after_i_stop_a_capture">Why does Wireshark hang after I stop a capture?</a></li>
+</ul>
+</li>
+<li><a href="#_capturing_packets_on_windows">Capturing packets on Windows</a>
+<ul class="sectlevel2">
+<li><a href="#capprobwin">I&#8217;m running Wireshark on Windows; why does some network interface on my machine not show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start", and/or why does Wireshark give me an error if I try to capture on that interface?</a></li>
+<li><a href="#_im_running_wireshark_on_windows_why_do_no_network_interfaces_show_up_in_the_list_of_interfaces_in_the_interface_field_in_the_dialog_box_popped_up_by_capturestart">I&#8217;m running Wireshark on Windows; why do no network interfaces show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start"?</a></li>
+<li><a href="#_im_running_wireshark_on_windows_why_am_i_not_seeing_any_traffic_being_sent_by_the_machine_running_wireshark">I&#8217;m running Wireshark on Windows; why am I not seeing any traffic being sent by the machine running Wireshark?</a></li>
+<li><a href="#_when_i_capture_on_windows_in_promiscuous_mode_i_can_see_packets_other_than_those_sent_to_or_from_my_machine_however_those_packets_show_up_with_a_short_frame_indication_unlike_packets_to_or_from_my_machine_what_should_i_do_to_arrange_that_i_see_those_packets_in_their_entirety">When I capture on Windows in promiscuous mode, I can see packets other than those sent to or from my machine; however, those packets show up with a "Short Frame" indication, unlike packets to or from my machine. What should I do to arrange that I see those packets in their entirety?</a></li>
+<li><a href="#_im_trying_to_capture_802_11_traffic_on_windows_why_am_i_not_seeing_any_packets">I&#8217;m trying to capture 802.11 traffic on Windows; why am I not seeing any packets?</a></li>
+<li><a href="#_im_trying_to_capture_802_11_traffic_on_windows_why_am_i_seeing_packets_received_by_the_machine_on_which_im_capturing_traffic_but_not_packets_sent_by_that_machine">I&#8217;m trying to capture 802.11 traffic on Windows; why am I seeing packets received by the machine on which I&#8217;m capturing traffic, but not packets sent by that machine?</a></li>
+<li><a href="#_im_trying_to_capture_ethernet_vlan_traffic_on_windows_and_im_capturing_on_a_raw_ethernet_device_rather_than_a_vlan_interface_so_that_i_can_see_the_vlan_headers_why_am_i_seeing_packets_received_by_the_machine_on_which_im_capturing_traffic_but_not_packets_sent_by_that_machine">I&#8217;m trying to capture Ethernet VLAN traffic on Windows, and I&#8217;m capturing on a "raw" Ethernet device rather than a "VLAN interface", so that I can see the VLAN headers; why am I seeing packets received by the machine on which I&#8217;m capturing traffic, but not packets sent by that machine?</a></li>
+</ul>
+</li>
+<li><a href="#_capturing_packets_on_unxes">Capturing packets on UN*Xes</a>
+<ul class="sectlevel2">
+<li><a href="#capprobunix">I&#8217;m running Wireshark on a UNIX-flavored OS; why does some network interface on my machine not show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start", and/or why does Wireshark give me an error if I try to capture on that interface?</a></li>
+<li><a href="#_im_running_wireshark_on_a_unix_flavored_os_why_do_no_network_interfaces_show_up_in_the_list_of_interfaces_in_the_interface_field_in_the_dialog_box_popped_up_by_capturestart">I&#8217;m running Wireshark on a UNIX-flavored OS; why do no network interfaces show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start"?</a></li>
+<li><a href="#_im_capturing_packets_on_linux_why_do_the_time_stamps_have_only_100ms_resolution_rather_than_1us_resolution">I&#8217;m capturing packets on Linux; why do the time stamps have only 100ms resolution, rather than 1us resolution?</a></li>
+</ul>
+</li>
+<li><a href="#_capturing_packets_on_wireless_lans">Capturing packets on wireless LANs</a>
+<ul class="sectlevel2">
+<li><a href="#_how_can_i_capture_raw_802_11_frames_including_non_data_management_beacon_frames">How can I capture raw 802.11 frames, including non-data (management, beacon) frames?</a></li>
+<li><a href="#_how_do_i_capture_on_an_802_11_device_in_monitor_mode">How do I capture on an 802.11 device in monitor mode?</a></li>
+</ul>
+</li>
+<li><a href="#_viewing_traffic">Viewing traffic</a>
+<ul class="sectlevel2">
+<li><a href="#_why_am_i_seeing_lots_of_packets_with_incorrect_tcp_checksums">Why am I seeing lots of packets with incorrect TCP checksums?</a></li>
+<li><a href="#_ive_just_installed_wireshark_and_the_traffic_on_my_local_lan_is_boring_where_can_i_find_more_interesting_captures">I&#8217;ve just installed Wireshark, and the traffic on my local LAN is boring. Where can I find more interesting captures?</a></li>
+<li><a href="#_why_doesnt_wireshark_correctly_identify_rtp_packets_it_shows_them_only_as_udp">Why doesn&#8217;t Wireshark correctly identify RTP packets? It shows them only as UDP.</a></li>
+<li><a href="#_why_doesnt_wireshark_show_yahoo_messenger_packets_in_captures_that_contain_yahoo_messenger_traffic">Why doesn&#8217;t Wireshark show Yahoo Messenger packets in captures that contain Yahoo Messenger traffic?</a></li>
+</ul>
+</li>
+<li><a href="#_filtering_traffic">Filtering traffic</a>
+<ul class="sectlevel2">
+<li><a href="#_i_saved_a_filter_and_tried_to_use_its_name_to_filter_the_display_why_do_i_get_an_unexpected_end_of_filter_string_error">I saved a filter and tried to use its name to filter the display; why do I get an "Unexpected end of filter string" error?</a></li>
+<li><a href="#_how_can_i_search_for_or_filter_packets_that_have_a_particular_string_anywhere_in_them">How can I search for, or filter, packets that have a particular string anywhere in them?</a></li>
+<li><a href="#_how_do_i_filter_a_capture_to_see_traffic_for_virus_xxx">How do I filter a capture to see traffic for virus XXX?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_general_questions">General Questions</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_wireshark">What is Wireshark?</h3>
+<div class="paragraph">
+<p>Wireshark® is a network protocol analyzer. It lets you capture and
+interactively browse the traffic running on a computer network. It has a
+rich and powerful feature set and is world&#8217;s most popular tool of its
+kind. It runs on most computing platforms including Windows, macOS,
+Linux, and UNIX. Network professionals, security experts, developers,
+and educators around the world use it regularly. It is freely available
+as open source, and is released under the GNU General Public License
+version 2.</p>
+</div>
+<div class="paragraph">
+<p>It is developed and maintained by a global team of protocol experts,
+and it is an example of a
+<a href="https://en.wikipedia.org/wiki/Disruptive_technology">disruptive
+technology</a>.</p>
+</div>
+<div class="paragraph">
+<p>Wireshark used to be known as Ethereal®. See the next question for
+details about the name change. If you&#8217;re still using Ethereal, it is
+strongly recommended that you upgrade to Wireshark as Ethereal is
+unsupported and has known security vulnerabilities.</p>
+</div>
+<div class="paragraph">
+<p>For more information, please see the
+<a href="https://www.wireshark.org/about.html">About Wireshark</a> page.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_whats_up_with_the_name_change_is_wireshark_a_fork">What&#8217;s up with the name change? Is Wireshark a fork?</h3>
+<div class="paragraph">
+<p>In May of 2006, Gerald Combs (the original author of Ethereal) went
+to work for CACE Technologies (best known for WinPcap). Unfortunately,
+he had to leave the Ethereal trademarks behind.</p>
+</div>
+<div class="paragraph">
+<p>This left the project in an awkward position. The only reasonable way
+to ensure the continued success of the project was to change the name.
+This is how Wireshark was born.</p>
+</div>
+<div class="paragraph">
+<p>Wireshark is almost (but not quite) a fork. Normally a "fork" of an
+open source project results in two names, web sites, development teams,
+support infrastructures, etc. This is the case with Wireshark except for
+one notable exception&#8201;&#8212;&#8201;every member of the core development team is
+now working on Wireshark. There has been no active development on
+Ethereal since the name change. Several parts of the Ethereal web site`
+(such as the mailing lists, source code repository, and build farm) have
+gone offline.</p>
+</div>
+<div class="paragraph">
+<p>More information on the name change can be found here:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.prweb.com/releases/2006/6/prweb396098.htm">Original press
+release</a></p>
+</li>
+<li>
+<p><a href="https://www.linux.com/news/ethereal-changes-name-wireshark">NewsForge article</a></p>
+</li>
+<li>
+<p>Many other articles in <a href="https://www.wireshark.org/bibliography.html">our
+bibliography</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_where_can_i_get_help">Where can I get help?</h3>
+<div class="paragraph">
+<p>Community support is available on the <a href="https://ask.wireshark.org/">Q&amp;A
+site</a> and on the wireshark-users mailing list. Subscription information
+and archives for all of Wireshark&#8217;s mailing lists can be found at
+<a href="https://www.wireshark.org/mailman/listinfo">https://www.wireshark.org/mailman/listinfo</a>.
+An IRC channel dedicated to Wireshark can be found at
+<a href="irc://irc.freenode.net/wireshark">irc://irc.freenode.net/wireshark</a>.</p>
+</div>
+<div class="paragraph">
+<p>Self-paced and instructor-led training is available at
+<a href="https://www.wiresharktraining.com">Wireshark University</a>. Wireshark
+University also offers certification via the Wireshark Certified Network
+Analyst program.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_kind_of_shark_is_wireshark">What kind of shark is Wireshark?</h3>
+<div class="paragraph">
+<p><em>carcharodon photoshopia</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_is_wireshark_pronounced_spelled_and_capitalized">How is Wireshark pronounced, spelled and capitalized?</h3>
+<div class="paragraph">
+<p>Wireshark is pronounced as the word <em>wire</em> followed immediately by
+the word <em>shark</em>. Exact pronunciation and emphasis may vary depending on
+your locale (e.g. Arkansas).</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s spelled with a capital <em>W</em>, followed by a lower-case <em>ireshark</em>.
+It is not a CamelCase word, i.e., <em>WireShark</em> is incorrect.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_much_does_wireshark_cost">How much does Wireshark cost?</h3>
+<div class="paragraph">
+<p>Wireshark is "free software"; you can download it without paying any
+license fee. The version of Wireshark you download isn&#8217;t a "demo"
+version, with limitations not present in a "full" version; it <em>is</em> the
+full version.</p>
+</div>
+<div class="paragraph">
+<p>The license under which Wireshark is issued is
+<a href="https://www.gnu.org/licenses/gpl-2.0.html">the GNU General Public License
+version 2</a>. See
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.html">the GNU GPL
+FAQ</a> for some more information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_but_i_just_paid_someone_on_ebay_for_a_copy_of_wireshark_did_i_get_ripped_off">But I just paid someone on eBay for a copy of Wireshark! Did I get ripped off?</h3>
+<div class="paragraph">
+<p>That depends. Did they provide any sort of value-added product or
+service, such as installation support, installation media, training,
+trace file analysis, or funky-colored shark-themed socks? Probably not.</p>
+</div>
+<div class="paragraph">
+<p>Wireshark is <a href="https://www.wireshark.org/download.html">available for
+anyone to download, absolutely free, at any time</a>. Paying for a copy
+implies that you should get something for your money.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_can_i_use_wireshark_commercially">Can I use Wireshark commercially?</h3>
+<div class="paragraph">
+<p>Yes, if, for example, you mean "I work for a commercial organization;
+can I use Wireshark to capture and analyze network traffic in our
+company&#8217;s networks or in our customer&#8217;s networks?"</p>
+</div>
+<div class="paragraph">
+<p>If you mean "Can I use Wireshark as part of my commercial product?",
+see <a href="#derived_work_gpl">the next entry in the FAQ</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_can_i_use_wireshark_as_part_of_my_commercial_product">Can I use Wireshark as part of my commercial product?</h3>
+<div class="paragraph">
+<p>As noted, Wireshark is licensed under
+<a href="https://www.gnu.org/licenses/gpl-2.0.html">the GNU General Public
+License, version 2</a>. The GPL imposes conditions on your use of GPL&#8217;ed
+code in your own products; you cannot, for example, make a "derived
+work" from Wireshark, by making modifications to it, and then sell the
+resulting derived work and not allow recipients to give away the
+resulting work. You must also make the changes you&#8217;ve made to the
+Wireshark source available to all recipients of your modified version;
+those changes must also be licensed under the terms of the GPL. See the
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.html">GPL FAQ</a> for
+more details; in particular, note the answer to
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.html#GPLCommercially">the
+question about modifying a GPLed program and selling it commercially</a>,
+and
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.html#LinkingWithGPL">the
+question about linking GPLed code with other code to make a proprietary
+program</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can combine a GPLed program such as Wireshark and a commercial
+program as long as they communicate "at arm&#8217;s length", as per
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0-faq.html#GPLInProprietarySystem">this
+item in the GPL FAQ</a>.</p>
+</div>
+<div class="paragraph">
+<p>We recommend keeping Wireshark and your product completely separate,
+communicating over sockets or pipes. If you&#8217;re loading any part of
+Wireshark as a DLL, you&#8217;re probably doing it wrong.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_protocols_are_currently_supported">What protocols are currently supported?</h3>
+<div class="paragraph">
+<p>There are currently hundreds of supported protocols and media.
+Details can be found in the
+<a href="https://www.wireshark.org/docs/man-pages/wireshark.html">wireshark(1)</a>
+man page.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_are_there_any_plans_to_support_your_favorite_protocol">Are there any plans to support {your favorite protocol}?</h3>
+<div class="paragraph">
+<p>Support for particular protocols is added to Wireshark as a result of
+people contributing that support; no formal plans for adding support for
+particular protocols in particular future releases exist.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_can_wireshark_read_capture_files_from_your_favorite_network_analyzer">Can Wireshark read capture files from {your favorite network analyzer}?</h3>
+<div class="paragraph">
+<p>Support for particular capture file formats is added to Wireshark as
+a result of people contributing that support; no formal plans for adding
+support for particular capture file formats in particular future
+releases exist.</p>
+</div>
+<div class="paragraph">
+<p>If a network analyzer writes out files in a format already supported by
+Wireshark (e.g., in libpcap format), Wireshark may already be able to
+read them, unless the analyzer has added its own proprietary extensions
+to that format.</p>
+</div>
+<div class="paragraph">
+<p>If a network analyzer writes out files in its own format, or has added
+proprietary extensions to another format, in order to make Wireshark
+read captures from that network analyzer, we would either have to have a
+specification for the file format, or the extensions, sufficient to give
+us enough information to read the parts of the file relevant to
+Wireshark, or would need at least one capture file in that format <strong>AND</strong>
+a detailed textual analysis of the packets in that capture file (showing
+packet time stamps, packet lengths, and the top-level packet header) in
+order to reverse-engineer the file format.</p>
+</div>
+<div class="paragraph">
+<p>Note that there is no guarantee that we will be able to
+reverse-engineer a capture file format.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_what_devices_can_wireshark_use_to_capture_packets">What devices can Wireshark use to capture packets?</h3>
+<div class="paragraph">
+<p>Wireshark can read live data from Ethernet, Token-Ring, FDDI, serial
+(PPP and SLIP) (if the OS on which it&#8217;s running allows Wireshark to do
+so), 802.11 wireless LAN (if the OS on which it&#8217;s running allows
+Wireshark to do so), ATM connections (if the OS on which it&#8217;s running
+allows Wireshark to do so), and the "any" device supported on Linux by
+recent versions of libpcap.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureSetup/NetworkMedia">the list of
+supported capture media on various OSes</a> for details (several items in
+there say "Unknown", which doesn&#8217;t mean "Wireshark can&#8217;t capture on
+them", it means "we don&#8217;t know whether it can capture on them"; we
+expect that it will be able to capture on many of them, but we haven&#8217;t
+tried it ourselves - if you try one of those types and it works, please
+update the wiki page accordingly.</p>
+</div>
+<div class="paragraph">
+<p>It can also read a variety of capture file formats, including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AG Group/WildPackets/Savvius
+EtherPeek/TokenPeek/AiroPeek/EtherHelp/Packet Grabber captures</p>
+</li>
+<li>
+<p>AIX&#8217;s iptrace captures</p>
+</li>
+<li>
+<p>Accellent&#8217;s 5Views LAN agent output</p>
+</li>
+<li>
+<p>Cinco Networks NetXRay captures</p>
+</li>
+<li>
+<p>Cisco Secure Intrusion Detection System IPLog output</p>
+</li>
+<li>
+<p>CoSine L2 debug output</p>
+</li>
+<li>
+<p>DBS Etherwatch VMS text output</p>
+</li>
+<li>
+<p>Endace Measurement Systems' ERF format captures</p>
+</li>
+<li>
+<p>EyeSDN USB S0 traces</p>
+</li>
+<li>
+<p>HP-UX nettl captures</p>
+</li>
+<li>
+<p>ISDN4BSD project i4btrace captures</p>
+</li>
+<li>
+<p>Linux Bluez Bluetooth stack hcidump -w traces</p>
+</li>
+<li>
+<p>Lucent/Ascend router debug output</p>
+</li>
+<li>
+<p>Microsoft Network Monitor captures</p>
+</li>
+<li>
+<p>Network Associates Windows-based Sniffer captures</p>
+</li>
+<li>
+<p>Network General/Network Associates DOS-based Sniffer (compressed or
+uncompressed) captures</p>
+</li>
+<li>
+<p>Network Instruments Observer version 9 captures</p>
+</li>
+<li>
+<p>Novell LANalyzer captures</p>
+</li>
+<li>
+<p>RADCOM&#8217;s WAN/LAN analyzer captures</p>
+</li>
+<li>
+<p>Shomiti/Finisar Surveyor captures</p>
+</li>
+<li>
+<p>Toshiba&#8217;s ISDN routers dump output</p>
+</li>
+<li>
+<p>VMS TCPIPtrace/TCPtrace/UCX$TRACE output</p>
+</li>
+<li>
+<p>Visual Networks' Visual UpTime traffic capture</p>
+</li>
+<li>
+<p>libpcap, tcpdump and various other tools using tcpdump&#8217;s capture
+format</p>
+</li>
+<li>
+<p>snoop and atmsnoop output</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>so that it can read traces from various network types, as captured by
+other applications or equipment, even if it cannot itself capture on
+those network types.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_does_wireshark_work_on_older_versions_of_windows_such_as_windows_7">Does Wireshark work on older versions of Windows such as Windows 7?</h3>
+<div class="paragraph">
+<p>Each major release branch of Wireshark supports the versions of Windows that are within their product lifecycle at the time of the “.0” release for that branch.
+For example, Wireshark 3.2.0 was released in December 2019, shortly before Windows 7 reached the end of its extended support in January 2020. As a result, each of the Wireshark 3.2.<em>x</em> releases supports Windows 7, even after January 2020.
+See the
+<a href="https://www.wireshark.org/docs/wsug_html_chunked/ChIntroPlatforms.html">Microsoft Windows section of the User’s Guide</a>
+and the
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis/Development/LifeCycle">End Of Life Planning section of the Release Life Cycle wiki page</a>
+for more details.</p>
+</div>
+<div class="paragraph">
+<p>Npcap might not work well on Windows 8 and earlier, so you might want to install WinPcap instead.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_wireshark">Installing Wireshark</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_i_installed_the_wireshark_rpm_or_other_package_why_did_it_install_tshark_but_not_wireshark">I installed the Wireshark RPM (or other package); why did it install TShark but not Wireshark?</h3>
+<div class="paragraph">
+<p>Many distributions have separate Wireshark packages, one for non-GUI
+components such as TShark, editcap, dumpcap, etc. and one for the GUI.
+If this is the case on your system, there&#8217;s probably a separate package
+named “wireshark-qt”. Find it and install it.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_wireshark">Building Wireshark</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_why_does_building_wireshark_fail_due_to_missing_headers_h_files">Why does building Wireshark fail due to missing headers (.h files)?</h3>
+<div class="paragraph">
+<p>If this is happening on Linux, it&#8217;s likely due to missing development library packages.
+For example, Debian and Ubuntu ship the GLib library in the libglib2.0-0 package, but ship its header files and other development assets in the libglib2.0-dev package.</p>
+</div>
+<div class="paragraph">
+<p>We maintain setup scripts (<em>*-setup.sh</em>) for many major distributions in the <em>tools</em> directory of the Wireshark sources that can install the required development packages for you.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crashes_and_other_fatal_errors">Crashes and other fatal errors</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_i_have_an_xxx_network_card_on_my_machine_if_i_try_to_capture_on_it_why_does_my_machine_crash_or_reset_itself">I have an <em>XXX</em> network card on my machine; if I try to capture on it, why does my machine crash or reset itself?</h3>
+<div class="paragraph">
+<p>This is almost certainly a problem with one or more of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using;</p>
+</li>
+<li>
+<p>the device driver for the interface you&#8217;re using;</p>
+</li>
+<li>
+<p>the libpcap/Npcap library and, if this is Windows, the Npcap device
+driver;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>so:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if you are using Windows, see <a href="https://nmap.org/npcap/">the Npcap
+support page</a> - check the "Patches, Bug Reports, Questions, Suggestions,
+etc" section;</p>
+</li>
+<li>
+<p>if you are using some Linux distribution, some version of BSD, or some
+other UNIX-flavored OS, you should report the problem to the company or
+organization that produces the OS (in the case of a Linux distribution,
+report the problem to whoever produces the distribution).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_does_my_machine_crash_or_reset_itself_when_i_select_start_from_the_capture_menu_or_select_preferences_from_the_edit_menu">Why does my machine crash or reset itself when I select "Start" from the "Capture" menu or select "Preferences" from the "Edit" menu?</h3>
+<div class="paragraph">
+<p>Both of those operations cause Wireshark to try to build a list of
+the interfaces that it can open; it does so by getting a list of
+interfaces and trying to open them. There is probably an OS, driver, or,
+for Windows, Npcap bug that causes the system to crash when this
+happens; see the previous question.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_capturing_packets">Capturing packets</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="promiscsniff">When I use Wireshark to capture packets, why do I see only packets to and from my machine, or not see all the traffic I&#8217;m expecting to see from or to the machine I&#8217;m trying to monitor?</h3>
+<div class="paragraph">
+<p>This might be because the interface on which you&#8217;re capturing is
+plugged into an Ethernet or Token Ring switch; on a switched network,
+unicast traffic between two ports will not necessarily appear on other
+ports - only broadcast and multicast traffic will be sent to all ports.</p>
+</div>
+<div class="paragraph">
+<p>Note that even if your machine is plugged into a hub, the "hub" may be
+a switched hub, in which case you&#8217;re still on a switched network.</p>
+</div>
+<div class="paragraph">
+<p>Note also that on the Linksys Web site, they say that their
+auto-sensing hubs "broadcast the 10Mb packets to the port that operate
+at 10Mb only and broadcast the 100Mb packets to the ports that operate
+at 100Mb only", which would indicate that if you sniff on a 10Mb port,
+you will not see traffic coming sent to a 100Mb port, and <em>vice versa</em>.
+This problem has also been reported for Netgear dual-speed hubs, and may
+exist for other "auto-sensing" or "dual-speed" hubs.</p>
+</div>
+<div class="paragraph">
+<p>Some switches have the ability to replicate all traffic on all ports to
+a single port so that you can plug your analyzer into that single port
+to sniff all traffic. You would have to check the documentation for the
+switch to see if this is possible and, if so, to see how to do this. See
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis/SwitchReference">the switch reference page</a> on
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis">the Wireshark Wiki</a> for information on some
+switches. (Note that it&#8217;s a Wiki, so you can update or fix that
+information, or add additional information on those switches or
+information on new switches, yourself.)</p>
+</div>
+<div class="paragraph">
+<p>Note also that many firewall/NAT boxes have a switch built into them;
+this includes many of the "cable/DSL router" boxes. If you have a box of
+that sort, that has a switch with some number of Ethernet ports into
+which you plug machines on your network, and another Ethernet port used
+to connect to a cable or DSL modem, you can, at least, sniff traffic
+between the machines on your network and the Internet by plugging the
+Ethernet port on the router going to the modem, the Ethernet port on the
+modem, and the machine on which you&#8217;re running Wireshark into a hub
+(make sure it&#8217;s not a switching hub, and that, if it&#8217;s a dual-speed hub,
+all three of those ports are running at the same speed.</p>
+</div>
+<div class="paragraph">
+<p>If your machine is <em>not</em> plugged into a switched network or a
+dual-speed hub, or it is plugged into a switched network but the port is
+set up to have all traffic replicated to it, the problem might be that
+the network interface on which you&#8217;re capturing doesn&#8217;t support
+"promiscuous" mode, or because your OS can&#8217;t put the interface into
+promiscuous mode. Normally, network interfaces supply to the host only:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>packets sent to one of that host&#8217;s link-layer addresses;</p>
+</li>
+<li>
+<p>broadcast packets;</p>
+</li>
+<li>
+<p>multicast packets sent to a multicast address that the host has
+configured the interface to accept.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Most network interfaces can also be put in "promiscuous" mode, in which
+they supply to the host all network packets they see. Wireshark will try
+to put the interface on which it&#8217;s capturing into promiscuous mode
+unless the "Capture packets in promiscuous mode" option is turned off in
+the "Capture Options" dialog box, and TShark will try to put the
+interface on which it&#8217;s capturing into promiscuous mode unless the <code>-p</code>
+option was specified. However, some network interfaces don&#8217;t support
+promiscuous mode, and some OSes might not allow interfaces to be put
+into promiscuous mode.</p>
+</div>
+<div class="paragraph">
+<p>If the interface is not running in promiscuous mode, it won&#8217;t see any
+traffic that isn&#8217;t intended to be seen by your machine. It <strong>will</strong> see
+broadcast packets, and multicast packets sent to a multicast MAC address
+the interface is set up to receive.</p>
+</div>
+<div class="paragraph">
+<p>You should ask the vendor of your network interface whether it supports
+promiscuous mode. If it does, you should ask whoever supplied the driver
+for the interface (the vendor, or the supplier of the OS you&#8217;re running
+on your machine) whether it supports promiscuous mode with that network
+interface.</p>
+</div>
+<div class="paragraph">
+<p>In the case of wireless LAN interfaces, it appears that, when those
+interfaces are promiscuously sniffing, they&#8217;re running in a
+significantly different mode from the mode that they run in when they&#8217;re
+just acting as network interfaces (to the extent that it would be a
+significant effort for those drivers to support for promiscuously
+sniffing <em>and</em> acting as regular network interfaces at the same time),
+so it may be that Windows drivers for those interfaces don&#8217;t support
+promiscuous mode.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_when_i_capture_with_wireshark_why_cant_i_see_any_tcp_packets_other_than_packets_to_and_from_my_machine_even_though_another_analyzer_on_the_network_sees_those_packets">When I capture with Wireshark, why can&#8217;t I see any TCP packets other than packets to and from my machine, even though another analyzer on the network sees those packets?</h3>
+<div class="paragraph">
+<p>You&#8217;re probably not seeing <em>any</em> packets other than unicast packets
+to or from your machine, and broadcast and multicast packets; a switch
+will normally send to a port only unicast traffic sent to the MAC
+address for the interface on that port, and broadcast and multicast
+traffic - it won&#8217;t send to that port unicast traffic sent to a MAC
+address for some other interface - and a network interface not in
+promiscuous mode will receive only unicast traffic sent to the MAC
+address for that interface, broadcast traffic, and multicast traffic
+sent to a multicast MAC address the interface is set up to receive.</p>
+</div>
+<div class="paragraph">
+<p>TCP doesn&#8217;t use broadcast or multicast, so you will only see your own
+TCP traffic, but UDP services may use broadcast or multicast so you&#8217;ll
+see some UDP traffic - however, this is not a problem with TCP traffic,
+it&#8217;s a problem with unicast traffic, as you also won&#8217;t see all UDP
+traffic between other machines.</p>
+</div>
+<div class="paragraph">
+<p>I.e., this is probably <a href="#promiscsniff">the same question as this
+earlier one</a>; see the response to that question.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_am_i_only_seeing_arp_packets_when_i_try_to_capture_traffic">Why am I only seeing ARP packets when I try to capture traffic?</h3>
+<div class="paragraph">
+<p>You&#8217;re probably on a switched network, and running Wireshark on a
+machine that&#8217;s not sending traffic to the switch and not being sent any
+traffic from other machines on the switch. ARP packets are often
+broadcast packets, which are sent to all switch ports.</p>
+</div>
+<div class="paragraph">
+<p>I.e., this is probably <a href="#promiscsniff">the same question as this
+earlier one</a>; see the response to that question.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_am_i_not_seeing_any_traffic_when_i_try_to_capture_traffic">Why am I not seeing any traffic when I try to capture traffic?</h3>
+<div class="paragraph">
+<p>Is the machine running Wireshark sending out any traffic on the
+network interface on which you&#8217;re capturing, or receiving any traffic on
+that network, or is there any broadcast traffic on the network or
+multicast traffic to a multicast group to which the machine running
+Wireshark belongs?</p>
+</div>
+<div class="paragraph">
+<p>If not, this may just be a problem with promiscuous sniffing, either
+due to running on a switched network or a dual-speed hub, or due to
+problems with the interface not supporting promiscuous mode; see the
+response to <a href="#promiscsniff">this earlier question</a>.</p>
+</div>
+<div class="paragraph">
+<p>Otherwise, on Windows, see the response to <a href="#capprobwin">this
+question</a> and, on a UNIX-flavored OS, see the response to
+<a href="#capprobunix">this question</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_do_i_put_an_interface_into_promiscuous_mode">How do I put an interface into promiscuous mode?</h3>
+<div class="paragraph">
+<p>By not disabling promiscuous mode when running Wireshark or TShark.</p>
+</div>
+<div class="paragraph">
+<p>Note, however, that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the form of promiscuous mode that libpcap (the library that programs
+such as tcpdump, Wireshark, etc. use to do packet capture) turns on will
+<strong>not</strong> necessarily be shown if you run <code>ifconfig</code> on the interface on a
+UNIX system;</p>
+</li>
+<li>
+<p>some network interfaces might not support promiscuous mode, and some
+drivers might not allow promiscuous mode to be turned on - see
+<a href="#promiscsniff">this earlier question</a> for more information on that;</p>
+</li>
+<li>
+<p>the fact that you&#8217;re not seeing any traffic, or are only seeing
+broadcast traffic, or aren&#8217;t seeing any non-broadcast traffic other than
+traffic to or from the machine running Wireshark, does not mean that
+promiscuous mode isn&#8217;t on - see <a href="#promiscsniff">this earlier
+question</a> for more information on that.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I.e., this is probably <a href="#promiscsniff">the same question as this
+earlier one</a>; see the response to that question.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_i_can_set_a_display_filter_just_fine_why_dont_capture_filters_work">I can set a display filter just fine; why don&#8217;t capture filters work?</h3>
+<div class="paragraph">
+<p>Capture filters currently use a different syntax than display
+filters. Here&#8217;s the corresponding section from the
+<a href="https://www.wireshark.org/docs/man-pages/wireshark.html">wireshark(1)</a>
+man page:</p>
+</div>
+<div class="paragraph">
+<p>"Display filters in Wireshark are very powerful; more fields are
+filterable in Wireshark than in other protocol analyzers, and the syntax
+you can use to create your filters is richer. As Wireshark progresses,
+expect more and more protocol fields to be allowed in display filters.</p>
+</div>
+<div class="paragraph">
+<p>Packet capturing is performed with the pcap library. The capture filter
+syntax follows the rules of the pcap library. This syntax is different
+from the display filter syntax."</p>
+</div>
+<div class="paragraph">
+<p>The capture filter syntax used by libpcap can be found in the
+<a href="http://www.tcpdump.org/tcpdump_man.html">tcpdump(8)</a> man page.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_can_i_capture_packets_with_crc_errors">How can I capture packets with CRC errors?</h3>
+<div class="paragraph">
+<p>Wireshark can capture only the packets that the packet capture
+library - libpcap on UNIX-flavored OSes, and the Npcap port to Windows
+of libpcap on Windows - can capture, and libpcap/Npcap can capture only
+the packets that the OS&#8217;s raw packet capture mechanism (or the Npcap
+driver, and the underlying OS networking code and network interface
+drivers, on Windows) will allow it to capture.</p>
+</div>
+<div class="paragraph">
+<p>Unless the OS always supplies packets with errors such as invalid CRCs
+to the raw packet capture mechanism, or can be configured to do so,
+invalid CRCs to the raw packet capture mechanism, Wireshark - and other
+programs that capture raw packets, such as tcpdump - cannot capture
+those packets. You will have to determine whether your OS needs to be so
+configured and, if so, can be so configured, configure it if necessary
+and possible, and make whatever changes to libpcap and the packet
+capture program you&#8217;re using are necessary, if any, to support capturing
+those packets.</p>
+</div>
+<div class="paragraph">
+<p>Most OSes probably do <strong>not</strong> support capturing packets with invalid CRCs
+on Ethernet, and probably do not support it on most other link-layer
+types. Some drivers on some OSes do support it, such as some Ethernet
+drivers on FreeBSD; in those OSes, you might always get those packets,
+or you might only get them if you capture in promiscuous mode (you&#8217;d
+have to determine which is the case).</p>
+</div>
+<div class="paragraph">
+<p>Note that libpcap does not currently supply to programs that use it an
+indication of whether the packet&#8217;s CRC was invalid (because the drivers
+themselves do not supply that information to the raw packet capture
+mechanism); therefore, Wireshark will not indicate which packets had CRC
+errors unless the FCS was captured (see the next question) and you&#8217;re
+using Wireshark 0.9.15 and later, in which case Wireshark will check the
+CRC and indicate whether it&#8217;s correct or not.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_can_i_capture_entire_frames_including_the_fcs">How can I capture entire frames, including the FCS?</h3>
+<div class="paragraph">
+<p>Wireshark can only capture data that the packet capture library -
+libpcap on UNIX-flavored OSes, and the Npcap port to Windows of libpcap
+on Windows - can capture, and libpcap/Npcap can capture only the data
+that the OS&#8217;s raw packet capture mechanism (or the Npcap driver, and the
+underlying OS networking code and network interface drivers, on Windows)
+will allow it to capture.</p>
+</div>
+<div class="paragraph">
+<p>For any particular link-layer network type, unless the OS supplies the
+FCS of a frame as part of the frame, or can be configured to do so,
+Wireshark - and other programs that capture raw packets, such as tcpdump
+- cannot capture the FCS of a frame. You will have to determine whether
+your OS needs to be so configured and, if so, can be so configured,
+configure it if necessary and possible, and make whatever changes to
+libpcap and the packet capture program you&#8217;re using are necessary, if
+any, to support capturing the FCS of a frame.</p>
+</div>
+<div class="paragraph">
+<p>Most OSes do <strong>not</strong> support capturing the FCS of a frame on Ethernet,
+and probably do not support it on most other link-layer types. Some
+drivers on some OSes do support it, such as some (all?) Ethernet drivers
+on NetBSD and possibly the driver for Apple&#8217;s gigabit Ethernet interface
+in macOS; in those OSes, you might always get the FCS, or you might only
+get the FCS if you capture in promiscuous mode (you&#8217;d have to determine
+which is the case).</p>
+</div>
+<div class="paragraph">
+<p>Versions of Wireshark prior to 0.9.15 will not treat an Ethernet FCS in
+a captured packet as an FCS. 0.9.15 and later will attempt to determine
+whether there&#8217;s an FCS at the end of the frame and, if it thinks there
+is, will display it as such, and will check whether it&#8217;s the correct
+CRC-32 value or not.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_capturing_packets_on_a_machine_on_a_vlan_why_dont_the_packets_im_capturing_have_vlan_tags">I&#8217;m capturing packets on a machine on a VLAN; why don&#8217;t the packets I&#8217;m capturing have VLAN tags?</h3>
+<div class="paragraph">
+<p>You might be capturing on what might be called a "VLAN interface" -
+the way a particular OS makes VLANs plug into the networking stack
+might, for example, be to have a network device object for the physical
+interface, which takes VLAN packets, strips off the VLAN header and
+constructs an Ethernet header, and passes that packet to an internal
+network device object for the VLAN, which then passes the packets onto
+various higher-level protocol implementations.</p>
+</div>
+<div class="paragraph">
+<p>In order to see the raw Ethernet packets, rather than "de-VLANized"
+packets, you would have to capture not on the virtual interface for the
+VLAN, but on the interface corresponding to the physical network device,
+if possible. See <a href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureSetup/VLAN">the
+Wireshark Wiki item on VLAN capturing</a> for details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_does_wireshark_hang_after_i_stop_a_capture">Why does Wireshark hang after I stop a capture?</h3>
+<div class="paragraph">
+<p>The most likely reason for this is that Wireshark is trying to look
+up an IP address in the capture to convert it to a name (so that, for
+example, it can display the name in the source address or destination
+address columns), and that lookup process is taking a very long time.</p>
+</div>
+<div class="paragraph">
+<p>Wireshark calls a routine in the OS of the machine on which it&#8217;s
+running to convert of IP addresses to the corresponding names. That
+routine probably does one or more of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a search of a system file listing IP addresses and names;</p>
+</li>
+<li>
+<p>a lookup using DNS;</p>
+</li>
+<li>
+<p>on UNIX systems, a lookup using NIS;</p>
+</li>
+<li>
+<p>on Windows systems, a NetBIOS-over-TCP query.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If a DNS server that&#8217;s used in an address lookup is not responding, the
+lookup will fail, but will only fail after a timeout while the system
+routine waits for a reply.</p>
+</div>
+<div class="paragraph">
+<p>In addition, on Windows systems, if the DNS lookup of the address
+fails, either because the server isn&#8217;t responding or because there are
+no records in the DNS that could be used to map the address to a name, a
+NetBIOS-over-TCP query will be made. That query involves sending a
+message to the NetBIOS-over-TCP name service on that machine, asking for
+the name and other information about the machine. If the machine isn&#8217;t
+running software that responds to those queries - for example, many
+non-Windows machines wouldn&#8217;t be running that software - the lookup will
+only fail after a timeout. Those timeouts can cause the lookup to take a
+long time.</p>
+</div>
+<div class="paragraph">
+<p>If you disable network address-to-name translation - for example, by
+turning off the "Enable network name resolution" option in the "Capture
+Options" dialog box for starting a network capture - the lookups of the
+address won&#8217;t be done, which may speed up the process of reading the
+capture file after the capture is stopped. You can make that setting the
+default by selecting "Preferences" from the "Edit" menu, turning off the
+"Enable network name resolution" option in the "Name resolution" options
+in the preferences dialog box, and using the "Save" button in that
+dialog box; note that this will save <em>all</em> your current preference
+settings.</p>
+</div>
+<div class="paragraph">
+<p>If Wireshark hangs when reading a capture even with network name
+resolution turned off, there might, for example, be a bug in one of
+Wireshark&#8217;s dissectors for a protocol causing it to loop infinitely. If
+you&#8217;re not running the most recent release of Wireshark, you should
+first upgrade to that release, as, if there&#8217;s a bug of that sort, it
+might&#8217;ve been fixed in a release after the one you&#8217;re running. If the
+hang occurs in the most recent release of Wireshark, the bug should be
+reported to <a href="mailto:wireshark-dev@wireshark.org">the Wireshark developers'
+mailing list</a> at <code>wireshark-dev@wireshark.org</code>.</p>
+</div>
+<div class="paragraph">
+<p>On UNIX-flavored OSes, please try to force Wireshark to dump core, by
+sending it a <code>SIGABRT</code> signal (usually signal 6) with the <code>kill</code>
+command, and then get a stack trace if you have a debugger installed. A
+stack trace can be obtained by using your debugger (<code>gdb</code> in this
+example), the Wireshark binary, and the resulting core file. Here&#8217;s an
+example of how to use the gdb command <code>backtrace</code> to do so.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ gdb wireshark core
+(gdb) backtrace
+..... prints the stack trace
+(gdb) quit
+$</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The core dump file may be named "wireshark.core" rather than "core" on
+some platforms (e.g., BSD systems).</p>
+</div>
+<div class="paragraph">
+<p>Also, if at all possible, please send a copy of the capture file that
+caused the problem. When capturing packets, Wireshark normally writes
+captured packets to a temporary file, which will probably be in <code>/tmp</code>
+or <code>/var/tmp</code> on UNIX-flavored OSes, <code>\TEMP</code> on the main system disk
+(normally <code>\Documents and Settings\`your login name
+`\Local Settings\Temp</code> on the main system disk on Windows XP and
+Server 2003, and <code>\Users\your login name\AppData\Local\Temp</code> on the main
+system disk on Windows Vista and later, so the capture file will
+probably be there. If you are capturing on a single interface, it will
+have a name of the form,
+<code>wireshark_&lt;iface&gt;_YYYYmmddHHMMSS_XXXXXX.&lt;fmt&gt;</code>, where &lt;fmt&gt; is the
+capture file format (pcap or pcapng), and &lt;iface&gt; is the actual name of
+the interface you are capturing on; otherwise, if you are capturing on
+multiple interfaces, it will have a name of the form,
+<code>wireshark_&lt;N&gt;_interfaces_YYYYmmddHHMMSS_XXXXXX.&lt;fmt&gt;</code>, where &lt;N&gt; is the
+number of simultaneous interfaces you are capturing on. Please don&#8217;t
+send a trace file greater than 1 MB when compressed; instead, make it
+available via FTP or HTTP, or say it&#8217;s available but leave it up to a
+developer to ask for it. If the trace file contains sensitive
+information (e.g., passwords), then please do not send it.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_capturing_packets_on_windows">Capturing packets on Windows</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="capprobwin">I&#8217;m running Wireshark on Windows; why does some network interface on my machine not show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start", and/or why does Wireshark give me an error if I try to capture on that interface?</h3>
+<div class="paragraph">
+<p>Wireshark relies on the Npcap library, the Npcap device driver,
+and the facilities that come with the OS on which it&#8217;s running in
+order to do captures.</p>
+</div>
+<div class="paragraph">
+<p>Therefore, if the OS, the Npcap library, or the Npcap driver don&#8217;t
+support capturing on a particular network interface device, Wireshark
+won&#8217;t be able to capture on that device.</p>
+</div>
+<div class="paragraph">
+<p>If an interface doesn&#8217;t show up in the list of interfaces in the
+"Interface:" field, and you know the name of the interface, try entering
+that name in the "Interface:" field and capturing on that device.</p>
+</div>
+<div class="paragraph">
+<p>If the attempt to capture on it succeeds, the interface is somehow not
+being reported by the mechanism Wireshark uses to get a list of
+interfaces. Try listing the interfaces with WinDump; see
+<a href="https://www.windump.org/">the WinDump Web site</a> for information on using
+WinDump.</p>
+</div>
+<div class="paragraph">
+<p>You would run WinDump with the <code>-D</code> flag; if it lists the interface,
+please report this to
+<a href="mailto:wireshark-dev@wireshark.org">wireshark-dev@wireshark.org</a> giving
+full details of the problem, including</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using, and the version of that operating
+system;</p>
+</li>
+<li>
+<p>the type of network device you&#8217;re using;</p>
+</li>
+<li>
+<p>the output of WinDump.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If WinDump does <em>not</em> list the interface, this is almost certainly a
+problem with one or more of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using;</p>
+</li>
+<li>
+<p>the device driver for the interface you&#8217;re using;</p>
+</li>
+<li>
+<p>the Npcap library and/or the Npcap device driver;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>so first check <a href="https://nmap.org/npcap/guide/">the Npcap User&#8217;s Guide</a> to
+see if your problem is mentioned there. If not, then see
+<a href="https://nmap.org/npcap/">the main Npcap page</a> - check the "Patches, Bug
+Reports, Questions, Suggestions, etc" section.</p>
+</div>
+<div class="paragraph">
+<p>If you are having trouble capturing on a particular network interface,
+first try capturing on that device with WinDump; see
+<a href="https://www.windump.org/">the WinDump Web site</a> for information on using
+WinDump.</p>
+</div>
+<div class="paragraph">
+<p>If you can capture on the interface with WinDump, send mail to
+<a href="mailto:wireshark-users@wireshark.org">wireshark-users@wireshark.org</a>
+giving full details of the problem, including</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using, and the version of that operating
+system;</p>
+</li>
+<li>
+<p>the type of network device you&#8217;re using;</p>
+</li>
+<li>
+<p>the error message you get from Wireshark.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you <em>cannot</em> capture on the interface with WinDump, this is almost
+certainly a problem with one or more of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using;</p>
+</li>
+<li>
+<p>the device driver for the interface you&#8217;re using;</p>
+</li>
+<li>
+<p>the Npcap library and/or the Npcap device driver;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>so first check <a href="https://nmap.org/npcap/guide/">the Npcap User&#8217;s Guide</a> to
+see if your problem is mentioned there. If not, then see
+<a href="https://nmap.org/npcap/">the main Npcap page</a> - check the "Patches, Bug
+Reports, Questions, Suggestions, etc" section.</p>
+</div>
+<div class="paragraph">
+<p>You may also want to ask the
+<a href="mailto:wireshark-users@wireshark.org">wireshark-users@wireshark.org</a> and
+the <a href="mailto:dev@nmap.org">dev@nmap.org</a> mailing
+lists to see if anybody happens to know about the problem and know a
+workaround or fix for the problem. (Note that you will have to subscribe
+to that list in order to be allowed to mail to it; see
+<a href="https://nmap.org/npcap/">the Npcap support page</a> for information on the
+mailing list.) In your mail, please give full details of the problem, as
+described above, and also indicate that the problem occurs with WinDump,
+not just with Wireshark.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_running_wireshark_on_windows_why_do_no_network_interfaces_show_up_in_the_list_of_interfaces_in_the_interface_field_in_the_dialog_box_popped_up_by_capturestart">I&#8217;m running Wireshark on Windows; why do no network interfaces show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start"?</h3>
+<div class="paragraph">
+<p>This is really <a href="#capprobwin">the same question as a previous one</a>;
+see the response to that question.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_running_wireshark_on_windows_why_am_i_not_seeing_any_traffic_being_sent_by_the_machine_running_wireshark">I&#8217;m running Wireshark on Windows; why am I not seeing any traffic being sent by the machine running Wireshark?</h3>
+<div class="paragraph">
+<p>If you are running some form of VPN client software, it might be
+causing this problem; people have seen this problem when they have Check
+Point&#8217;s VPN software installed on their machine. If that&#8217;s the cause of
+the problem, you will have to remove the VPN software in order to have
+Wireshark (or any other application using Npcap) see outgoing packets;
+unfortunately, neither we nor the Npcap developers know any way to make
+Npcap and the VPN software work well together.</p>
+</div>
+<div class="paragraph">
+<p>Also, some drivers for Windows (especially some wireless network
+interface drivers) apparently do not, when running in promiscuous mode,
+arrange that outgoing packets are delivered to the software that
+requested that the interface run promiscuously; try turning promiscuous
+mode off.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_when_i_capture_on_windows_in_promiscuous_mode_i_can_see_packets_other_than_those_sent_to_or_from_my_machine_however_those_packets_show_up_with_a_short_frame_indication_unlike_packets_to_or_from_my_machine_what_should_i_do_to_arrange_that_i_see_those_packets_in_their_entirety">When I capture on Windows in promiscuous mode, I can see packets other than those sent to or from my machine; however, those packets show up with a "Short Frame" indication, unlike packets to or from my machine. What should I do to arrange that I see those packets in their entirety?</h3>
+<div class="paragraph">
+<p>In at least some cases, this appears to be the result of PGPnet
+running on the network interface on which you&#8217;re capturing; turn it off
+on that interface.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_trying_to_capture_802_11_traffic_on_windows_why_am_i_not_seeing_any_packets">I&#8217;m trying to capture 802.11 traffic on Windows; why am I not seeing any packets?</h3>
+<div class="paragraph">
+<p>At least some 802.11 card drivers on Windows appear not to see any
+packets if they&#8217;re running in promiscuous mode. Try turning promiscuous
+mode off; you&#8217;ll only be able to see packets sent by and received by
+your machine, not third-party traffic, and it&#8217;ll look like Ethernet
+traffic and won&#8217;t include any management or control frames, but that&#8217;s a
+limitation of the card drivers.</p>
+</div>
+<div class="paragraph">
+<p>See the archived
+<a href="https://web.archive.org/web/20090226193157/http://www.micro-logix.com/winpcap/Supported.asp">MicroLogix&#8217;s
+list of cards supported with WinPcap</a> for information on support of
+various adapters and drivers with WinPcap.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_trying_to_capture_802_11_traffic_on_windows_why_am_i_seeing_packets_received_by_the_machine_on_which_im_capturing_traffic_but_not_packets_sent_by_that_machine">I&#8217;m trying to capture 802.11 traffic on Windows; why am I seeing packets received by the machine on which I&#8217;m capturing traffic, but not packets sent by that machine?</h3>
+<div class="paragraph">
+<p>This appears to be another problem with promiscuous mode; try turning
+it off.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_trying_to_capture_ethernet_vlan_traffic_on_windows_and_im_capturing_on_a_raw_ethernet_device_rather_than_a_vlan_interface_so_that_i_can_see_the_vlan_headers_why_am_i_seeing_packets_received_by_the_machine_on_which_im_capturing_traffic_but_not_packets_sent_by_that_machine">I&#8217;m trying to capture Ethernet VLAN traffic on Windows, and I&#8217;m capturing on a "raw" Ethernet device rather than a "VLAN interface", so that I can see the VLAN headers; why am I seeing packets received by the machine on which I&#8217;m capturing traffic, but not packets sent by that machine?</h3>
+<div class="paragraph">
+<p>The way the Windows networking code works probably means that packets
+are sent on a "VLAN interface" rather than the "raw" device, so packets
+sent by the machine will only be seen when you capture on the "VLAN
+interface". If so, you will be unable to see outgoing packets when
+capturing on the "raw" device, so you are stuck with a choice between
+seeing VLAN headers and seeing outgoing packets.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_capturing_packets_on_unxes">Capturing packets on UN*Xes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="capprobunix">I&#8217;m running Wireshark on a UNIX-flavored OS; why does some network interface on my machine not show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start", and/or why does Wireshark give me an error if I try to capture on that interface?</h3>
+<div class="paragraph">
+<p>You may need to run Wireshark from an account with sufficient
+privileges to capture packets, such as the super-user account, or may
+need to give your account sufficient privileges to capture packets. Only
+those interfaces that Wireshark can open for capturing show up in that
+list; if you don&#8217;t have sufficient privileges to capture on any
+interfaces, no interfaces will show up in the list. See
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureSetup/CapturePrivileges">the Wireshark
+Wiki item on capture privileges</a> for details on how to give a particular
+account or account group capture privileges on platforms where that can
+be done.</p>
+</div>
+<div class="paragraph">
+<p>If you are running Wireshark from an account with sufficient
+privileges, then note that Wireshark relies on the libpcap library, and
+on the facilities that come with the OS on which it&#8217;s running in order
+to do captures. On some OSes, those facilities aren&#8217;t present by
+default; see <a href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureSetup/CaptureSupport">the
+Wireshark Wiki item on adding capture support</a> for details.</p>
+</div>
+<div class="paragraph">
+<p>And, even if you&#8217;re running with an account that has sufficient
+privileges to capture, and capture support is present in your OS, if the
+OS or the libpcap library don&#8217;t support capturing on a particular
+network interface device or particular types of devices, Wireshark won&#8217;t
+be able to capture on that device.</p>
+</div>
+<div class="paragraph">
+<p>On Solaris, note that libpcap 0.6.2 and earlier didn&#8217;t support Token
+Ring interfaces; the current version, 0.7.2, does support Token Ring,
+and the current version of Wireshark works with libpcap 0.7.2 and later.</p>
+</div>
+<div class="paragraph">
+<p>If an interface doesn&#8217;t show up in the list of interfaces in the
+"Interface:" field, and you know the name of the interface, try entering
+that name in the "Interface:" field and capturing on that device.</p>
+</div>
+<div class="paragraph">
+<p>If the attempt to capture on it succeeds, the interface is somehow not
+being reported by the mechanism Wireshark uses to get a list of
+interfaces; please report this to
+<a href="mailto:wireshark-dev@wireshark.org">wireshark-dev@wireshark.org</a> giving
+full details of the problem, including</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using, and the version of that operating
+system (for Linux, give both the version number of the kernel and the
+name and version number of the distribution you&#8217;re using);</p>
+</li>
+<li>
+<p>the type of network device you&#8217;re using.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you are having trouble capturing on a particular network interface,
+and you&#8217;ve made sure that (on platforms that require it) you&#8217;ve arranged
+that packet capture support is present, as per the above, first try
+capturing on that device with <code>tcpdump</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you can capture on the interface with <code>tcpdump</code>, send mail to
+<a href="mailto:wireshark-users@wireshark.org">wireshark-users@wireshark.org</a>
+giving full details of the problem, including</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using, and the version of that operating
+system (for Linux, give both the version number of the kernel and the
+name and version number of the distribution you&#8217;re using);</p>
+</li>
+<li>
+<p>the type of network device you&#8217;re using;</p>
+</li>
+<li>
+<p>the error message you get from Wireshark.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you <em>cannot</em> capture on the interface with <code>tcpdump</code>, this is almost
+certainly a problem with one or more of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the operating system you&#8217;re using;</p>
+</li>
+<li>
+<p>the device driver for the interface you&#8217;re using;</p>
+</li>
+<li>
+<p>the libpcap library;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>so you should report the problem to the company or organization that
+produces the OS (in the case of a Linux distribution, report the problem
+to whoever produces the distribution).</p>
+</div>
+<div class="paragraph">
+<p>You may also want to ask the
+<a href="mailto:wireshark-users@wireshark.org">wireshark-users@wireshark.org</a> and
+the
+<a href="mailto:tcpdump-workers@lists.tcpdump.org">tcpdump-workers@lists.tcpdump.org</a>
+mailing lists to see if anybody happens to know about the problem and
+know a workaround or fix for the problem. In your mail, please give full
+details of the problem, as described above, and also indicate that the
+problem occurs with <code>tcpdump</code> not just with Wireshark.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_running_wireshark_on_a_unix_flavored_os_why_do_no_network_interfaces_show_up_in_the_list_of_interfaces_in_the_interface_field_in_the_dialog_box_popped_up_by_capturestart">I&#8217;m running Wireshark on a UNIX-flavored OS; why do no network interfaces show up in the list of interfaces in the "Interface:" field in the dialog box popped up by "Capture&#8594;Start"?</h3>
+<div class="paragraph">
+<p>This is really <a href="#capprobunix">the same question as the previous
+one</a>; see the response to that question.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_im_capturing_packets_on_linux_why_do_the_time_stamps_have_only_100ms_resolution_rather_than_1us_resolution">I&#8217;m capturing packets on Linux; why do the time stamps have only 100ms resolution, rather than 1us resolution?</h3>
+<div class="paragraph">
+<p>Wireshark gets time stamps from libpcap/Npcap, and libpcap/Npcap get
+them from the OS kernel, so Wireshark - and any other program using
+libpcap, such as tcpdump - is at the mercy of the time stamping code in
+the OS for time stamps.</p>
+</div>
+<div class="paragraph">
+<p>At least on x86-based machines, Linux can get high-resolution time
+stamps on newer processors with the Time Stamp Counter (TSC) register;
+for example, Intel x86 processors, starting with the Pentium Pro, and
+including all x86 processors since then, have had a TSC, and other
+vendors probably added the TSC at some point to their families of x86
+processors. The Linux kernel must be configured with the CONFIG_X86_TSC
+option enabled in order to use the TSC. Make sure this option is enabled
+in your kernel.</p>
+</div>
+<div class="paragraph">
+<p>In addition, some Linux distributions may have bugs in their versions
+of the kernel that cause packets not to be given high-resolution time
+stamps even if the TSC is enabled. See, for example, bug 61111 for Red
+Hat Linux 7.2. If your distribution has a bug such as this, you may have
+to run a standard kernel from kernel.org in order to get high-resolution
+time stamps.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_capturing_packets_on_wireless_lans">Capturing packets on wireless LANs</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_how_can_i_capture_raw_802_11_frames_including_non_data_management_beacon_frames">How can I capture raw 802.11 frames, including non-data (management, beacon) frames?</h3>
+<div class="paragraph">
+<p>That depends on the operating system on which you&#8217;re running, and on
+the 802.11 interface on which you&#8217;re capturing.</p>
+</div>
+<div class="paragraph">
+<p>This would probably require that you capture in promiscuous mode or in
+the mode called "monitor mode" or "RFMON mode". On some platforms, or
+with some cards, this might require that you capture in monitor mode -
+promiscuous mode might not be sufficient. If you want to capture traffic
+on networks other than the one with which you&#8217;re associated, you will
+have to capture in monitor mode.</p>
+</div>
+<div class="paragraph">
+<p>Not all operating systems support capturing non-data packets and, even
+on operating systems that do support it, not all drivers, and thus not
+all interfaces, support it. Even on those that do, monitor mode might
+not be supported by the operating system or by the drivers for all
+interfaces.</p>
+</div>
+<div class="paragraph">
+<p><strong>NOTE:</strong> an interface running in monitor mode will, on most if not all
+platforms, not be able to act as a regular network interface; putting it
+into monitor mode will, in effect, take your machine off of whatever
+network it&#8217;s on as long as the interface is in monitor mode, allowing it
+only to passively capture packets.</p>
+</div>
+<div class="paragraph">
+<p>This means that you should disable name resolution when capturing in
+monitor mode; otherwise, when Wireshark (or TShark, or tcpdump) tries to
+display IP addresses as host names, it will probably block for a long
+time trying to resolve the name because it will not be able to
+communicate with any DNS or NIS servers.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureSetup/WLAN">the Wireshark Wiki
+item on 802.11 capturing</a> for details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_do_i_capture_on_an_802_11_device_in_monitor_mode">How do I capture on an 802.11 device in monitor mode?</h3>
+<div class="paragraph">
+<p>Whether you will be able to capture in monitor mode depends on the
+operating system, adapter, and driver you&#8217;re using. See
+<a href="#raw_80211_sniff">the previous question</a> for information on monitor
+mode, including a link to the Wireshark Wiki page that gives details on
+802.11 capturing.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_viewing_traffic">Viewing traffic</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_why_am_i_seeing_lots_of_packets_with_incorrect_tcp_checksums">Why am I seeing lots of packets with incorrect TCP checksums?</h3>
+<div class="paragraph">
+<p>If the packets that have incorrect TCP checksums are all being sent
+by the machine on which Wireshark is running, this is probably because
+the network interface on which you&#8217;re capturing does TCP checksum
+offloading. That means that the TCP checksum is added to the packet by
+the network interface, not by the OS&#8217;s TCP/IP stack; when capturing on
+an interface, packets being sent by the host on which you&#8217;re capturing
+are directly handed to the capture interface by the OS, which means that
+they are handed to the capture interface without a TCP checksum being
+added to them.</p>
+</div>
+<div class="paragraph">
+<p>The only way to prevent this from happening would be to disable TCP
+checksum offloading, but</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>that might not even be possible on some OSes;</p>
+</li>
+<li>
+<p>that could reduce networking performance significantly.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>However, you can disable the check that Wireshark does of the TCP
+checksum, so that it won&#8217;t report any packets as having TCP checksum
+errors, and so that it won&#8217;t refuse to do TCP reassembly due to a packet
+having an incorrect TCP checksum. That can be set as an Wireshark
+preference by selecting "Preferences" from the "Edit" menu, opening up
+the "Protocols" list in the left-hand pane of the "Preferences" dialog
+box, selecting "TCP", from that list, turning off the "Check the
+validity of the TCP checksum when possible" option, clicking "Save" if
+you want to save that setting in your preference file, and clicking
+"OK".</p>
+</div>
+<div class="paragraph">
+<p>It can also be set on the Wireshark or TShark command line with a
+<code>-o tcp.check_checksum:false</code> command-line flag, or manually set in your
+preferences file by adding a <code>tcp.check_checksum:false</code> line.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ive_just_installed_wireshark_and_the_traffic_on_my_local_lan_is_boring_where_can_i_find_more_interesting_captures">I&#8217;ve just installed Wireshark, and the traffic on my local LAN is boring. Where can I find more interesting captures?</h3>
+<div class="paragraph">
+<p>We have a collection of strange and exotic sample capture files at
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis/SampleCaptures">https://gitlab.com/wireshark/wireshark/-/wikis/SampleCaptures</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_doesnt_wireshark_correctly_identify_rtp_packets_it_shows_them_only_as_udp">Why doesn&#8217;t Wireshark correctly identify RTP packets? It shows them only as UDP.</h3>
+<div class="paragraph">
+<p>Wireshark can identify a UDP datagram as containing a packet of a
+particular protocol running atop UDP only if</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The protocol in question has a particular standard port number, and
+the UDP source or destination port number is that port</p>
+</li>
+<li>
+<p>Packets of that protocol can be identified by looking for a
+"signature" of some type in the packet - i.e., some data that, if
+Wireshark finds it in some particular part of a packet, means that the
+packet is almost certainly a packet of that type.</p>
+</li>
+<li>
+<p>Some <em>other</em> traffic earlier in the capture indicated that, for
+example, UDP traffic between two particular addresses and ports will be
+RTP traffic.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>RTP doesn&#8217;t have a standard port number, so 1) doesn&#8217;t work; it doesn&#8217;t,
+as far as I know, have any "signature", so 2) doesn&#8217;t work.</p>
+</div>
+<div class="paragraph">
+<p>That leaves 3). If there&#8217;s RTSP traffic that sets up an RTP session,
+then, at least in some cases, the RTSP dissector will set things up so
+that subsequent RTP traffic will be identified. Currently, that&#8217;s the
+only place we do that; there may be other places.</p>
+</div>
+<div class="paragraph">
+<p>However, there will always be places where Wireshark is simply
+<strong>incapable</strong> of deducing that a given UDP flow is RTP; a mechanism would
+be needed to allow the user to specify that a given conversation should
+be treated as RTP. As of Wireshark 0.8.16, such a mechanism exists; if
+you select a UDP or TCP packet, the right mouse button menu will have a
+"Decode As&#8230;&#8203;" menu item, which will pop up a dialog box letting you
+specify that the source port, the destination port, or both the source
+and destination ports of the packet should be dissected as some
+particular protocol.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_why_doesnt_wireshark_show_yahoo_messenger_packets_in_captures_that_contain_yahoo_messenger_traffic">Why doesn&#8217;t Wireshark show Yahoo Messenger packets in captures that contain Yahoo Messenger traffic?</h3>
+<div class="paragraph">
+<p>Wireshark only recognizes as Yahoo Messenger traffic packets to or
+from TCP port 3050 that begin with "YPNS", "YHOO", or "YMSG". TCP
+segments that start with the middle of a Yahoo Messenger packet that
+takes more than one TCP segment will not be recognized as Yahoo
+Messenger packets (even if the TCP segment also contains the beginning
+of another Yahoo Messenger packet).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filtering_traffic">Filtering traffic</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_i_saved_a_filter_and_tried_to_use_its_name_to_filter_the_display_why_do_i_get_an_unexpected_end_of_filter_string_error">I saved a filter and tried to use its name to filter the display; why do I get an "Unexpected end of filter string" error?</h3>
+<div class="paragraph">
+<p>You cannot use the name of a saved display filter as a filter. To
+filter the display, you can enter a display filter expression - <strong>not</strong>
+the name of a saved display filter - in the "Filter:" box at the bottom
+of the display, and type the &lt;Enter&gt; key or press the "Apply" button
+(that does not require you to have a saved filter), or, if you want to
+use a saved filter, you can press the "Filter:" button, select the
+filter in the dialog box that pops up, and press the "OK" button.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_can_i_search_for_or_filter_packets_that_have_a_particular_string_anywhere_in_them">How can I search for, or filter, packets that have a particular string anywhere in them?</h3>
+<div class="paragraph">
+<p>If you want to do this when capturing, you can&#8217;t. That&#8217;s a feature
+that would be hard to implement in capture filters without changes to
+the capture filter code, which, on many platforms, is in the OS kernel
+and, on other platforms, is in the libpcap library.</p>
+</div>
+<div class="paragraph">
+<p>After capture, you can search for text by selecting <em>Edit→Find
+Packet&#8230;&#8203;</em> and making sure <em>String</em> is selected. Alternately, you can
+use the "contains" display filter operator or "matches" operator if it&#8217;s
+supported on your system.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_do_i_filter_a_capture_to_see_traffic_for_virus_xxx">How do I filter a capture to see traffic for virus XXX?</h3>
+<div class="paragraph">
+<p>For some viruses/worms there might be a capture filter to recognize
+the virus traffic. Check the
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureFilters">CaptureFilters</a> page on the
+<a href="https://gitlab.com/wireshark/wireshark/-/wikis">Wireshark Wiki</a> to see if anybody&#8217;s added
+such a filter.</p>
+</div>
+<div class="paragraph">
+<p>Note that Wireshark was not designed to be an intrusion detection
+system; you might be able to use it as an IDS, but in most cases
+software designed to be an IDS, such as <a href="https://www.snort.org/">Snort</a> or
+<a href="https://www.prelude-siem.org/">Prelude</a>, will probably work better.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-10-06 16:17:43 UTC
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self'  'unsafe-inline'"
+    /> 
+    <link rel="stylesheet" href="css/all.min.css" />
+    <!-- <link rel="stylesheet" href="css/materialize.min.css" /> -->
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Scan Your Network</title>
+  </head>
+  <body>
+    <div class="container center-align">
+      <h3><i class="fas fa-images"></i>Network Scanner</h3>
+      <p>select a target for t/shark</p>
+      <form id="image-form">
+        <input type="text" value= "c5" id = "target"/>
+        <input type="text" value= "-f port 80" id="type"/>
+        <br>
+        <br>
+
+
+        <select id="ddlViewBy">
+          <option value="1"selected="selected">Port</option>
+          <option value="2">80</option>
+          <option value="3" >443</option>
+          <option value="4">test3</option>
+        </select>    
+
+
+         <!--<select id="ddlViewBy">
+          <option value="1"selected="selected">Protocol</option>
+          <option value="2">test1</option>
+          <option value="3" >test2</option>
+          <option value="4">test3</option>
+        </select>    -->
+
+
+
+
+
+        <input type="submit" value="Initiate Scan" class="btn black" />
+        <br>
+        <br> 
+        <br>       
+        <!-- <input type="submit" value="Stop Scan" class="btn black" /> -->
+        <button type="button" id="stop">"Stop Scan"</button>
+      </form>
+
+      <div class="card output">
+        <div class="card-content">
+       
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12">           
+            <ul id='result'></ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <a class="waves-effect waves-light btn" id="ls">ls -al</a>
+            <a class="waves-effect waves-light btn" id="notepad">Start Notepad</a>
+            <a class="waves-effect waves-light btn" id="qr">Get QR Code</a>           
+           
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="js/materialize.min.js"></script>
+    <script>
+      const path = require('path')
+      const os = require('os')
+      const { ipcRenderer } = require('electron')
+      // const stop = document.getElementById('Stop');
+      const form = document.getElementById('image-form');
+      const ul = document.getElementById('result');
+      const id = document.getElementById("ls");
+      const notepad = document.getElementById("notepad");
+      const qr = document.getElementById("qr");
+
+      
+      function createNode(element) {
+        return document.createElement(element); 
+      }
+
+      function append(parent, el) {
+        return parent.appendChild(el); 
+      }
+
+
+
+      document.getElementById("stop").addEventListener("click", function() {
+  console.log ("stop button pressed")
+
+
+  ipcRenderer.send('stop:scan', {
+          
+        })
+
+
+});
+        
+
+      
+
+
+      
+      //   Onsubmit
+      form.addEventListener('submit', (e) => {
+        e.preventDefault()  
+        //getting value from input boxes 
+        
+   
+    let f = document.getElementById("ddlViewBy");
+    let as = f.value;
+    let strUser = f.options[f.selectedIndex].value;
+
+console.log(as+" ,"+strUser)
+
+
+
+
+        let target = document.getElementById('target').value
+        let type = document.getElementById('type').value
+        console.log(target +" "+ type)
+
+        ul.innerHTML ="";
+        //send cmd function in Main.ja
+        ipcRenderer.send('send:cmd', {
+          target,
+          type,
+          as
+        })
+      })
+
+      //   On done
+      ipcRenderer.on('cmd:done', (event, data) => {
+        console.log("nmap command compled")
+        //console.log(data)
+        data = data.split("\n")
+        data.map( function(res) {
+          let li = createNode('li')
+          span = createNode('span')
+          li.innerHTML = res
+          console.log(res)
+          append(li, span)
+          append(ul,li)
+
+        })       
+      })
+
+      id.addEventListener('click', (e,data) =>{
+        console.log("ls -al")
+        ul.innerHTML = "";
+        ipcRenderer.send('list:files', {
+          
+        })
+
+      })
+      notepad.addEventListener('click', (e,data) =>{
+        console.log("notepad")
+        ipcRenderer.send('start:notepad', {
+          
+        })
+
+      })
+      qr.addEventListener('click', (e,data) =>{
+       console.log("get qr code")
+        ipcRenderer.send('get:webpage', {
+         
+        })
+
+      })
+
+    </script>
+  </body>
+</html>
