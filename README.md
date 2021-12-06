@@ -18,11 +18,19 @@ It is planned that the application will be available initially for download for 
 
 ## Usage
 
-Inputs
+The following will describe how to use the application.  The description will explain how to initate a scan based on the choices a user makes with regards to ports and protocols. Argument choices include port numbers and protocols. And stop a scan and view the saved PCAP files. 
 
-Initiate Scan
+# Initiate and Stop a Scan
 
-Stop Scan 
+1. 	Select arguments using drop down menu or add IP address to IP input fields. 
+2.	Press Initiate Scan
+3.  To stop a scan press "Stop Scan"
+
+# View Saved File 
+1. Open File Explorer
+2. Open App Folder
+3. Select and open saved files. 
+ 
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
