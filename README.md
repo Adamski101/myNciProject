@@ -1,5 +1,5 @@
 # Adam's Network Scanner
-Welcome to Adam's Network Scanner. The application should be considered as much an educational tool as a network scanning app.  The application will achieve this by leveraging aspects of functionality provided by t-shark.  Tshark is a command-line network traffic analyzer that enables you to capture packet data from a live network or read packets from a previously saved capture file by either printing a decoded form of those packets to the standard output or by writing the packets to a file.  the scanning tool Wireshark.  
+Welcome to Adam's Network Scanner. The application should be considered as much an educational tool as a network scanning app.  The application will achieve this by leveraging aspects of functionality provided by t-shark.  Tshark is a command-line network traffic analyzer that enables you to capture packet data from a live network or read packets from a previously saved capture file by either printing a decoded form of those packets to the standard output or by writing the packets to a file. 
 
 ## Installation
 It is planned that the application will be available initially for download for Windows from the Windows Store only with a cross-platform release at a later date. To download and install the application use the following steps. 
