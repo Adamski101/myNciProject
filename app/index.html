@@ -17,7 +17,7 @@
       <h3><i class="fas fa-images"></i>Adam's Network Scanner</h3>
       <p>select a target for t/shark</p>
       <form id="image-form">
-        <input type="text" value= "c5" id = "target"/>
+        <input type="text" value= "-c5" id = "target"/>
         <input type="text" value= "-f port 80" id="type"/>
         <br>
         <br>
@@ -49,6 +49,10 @@
         <!-- <input type="submit" value="Stop Scan" class="btn black" /> -->
         <button type="button" id="stop">"Stop Scan"</button>
       </form>
+
+      <div class="input-field col s12">           
+        <ul id='result'></ul>
+      </div>
 
      
 
@@ -115,7 +119,7 @@
         data = data.split("\n")
         data.map( function(res) {
           let li = createNode('li')
-          span = createNode('span')
+          let span = createNode('span')
           li.innerHTML = res
           console.log(res)
           append(li, span)

@@ -100,16 +100,15 @@ async function sendCommand(args){
   let ar = await ['-i 4','-c5','-f port 80']
 
 
-  //if(args.as ==2){
-    // ar=["-i 4", "-c 5","-f tcp port 80"]
-    //ar=['-i 4',"-c 5", "-f tcp port 443"]
+  if(args.as ==3){
+    ar = await ['-i 4','-c5','-f port 443']
 
- // } else {
-    // ar=['-i 4',"-f tcp port 443"]
-
+  } else {
+    ar = await ['-i 4','-c5','-f port 80']
 
 
-  //}
+
+  }
 
 
   
