@@ -14,7 +14,7 @@
   </head>
   <body>
     <div class="container center-align">
-      <h3><i class="fas fa-images"></i>Network Scanner</h3>
+      <h3><i class="fas fa-images"></i>Adam's Network Scanner</h3>
       <p>select a target for t/shark</p>
       <form id="image-form">
         <input type="text" value= "c5" id = "target"/>
@@ -60,11 +60,7 @@
       // const stop = document.getElementById('Stop');
       const form = document.getElementById('image-form');
       const ul = document.getElementById('result');
-      const id = document.getElementById("ls");
-      const notepad = document.getElementById("notepad");
-      const qr = document.getElementById("qr");
-
-      
+           
       function createNode(element) {
         return document.createElement(element); 
       }
@@ -74,23 +70,16 @@
       }
 
 
-
-      document.getElementById("stop").addEventListener("click", function() {
-  console.log ("stop button pressed")
-
-
-  ipcRenderer.send('stop:scan', {
+    document.getElementById("stop").addEventListener("click", function() {
+      console.log ("stop button pressed")
+      ipcRenderer.send('stop:scan', {
           
-        })
+    })
 
 
 });
+
         
-
-      
-
-
-      
       //   Onsubmit
       form.addEventListener('submit', (e) => {
         e.preventDefault()  
@@ -101,7 +90,7 @@
     let as = f.value;
     let strUser = f.options[f.selectedIndex].value;
 
-console.log(as+" ,"+strUser)
+    console.log(as+" ,"+strUser)
 
 
 
@@ -110,8 +99,8 @@ console.log(as+" ,"+strUser)
         let type = document.getElementById('type').value
         console.log(target +" "+ type)
 
-        ul.innerHTML ="";
-        //send cmd function in Main.ja
+        // ul.innerHTML ="";
+        //send cmd function in Main.js
         ipcRenderer.send('send:cmd', {
           target,
           type,
@@ -133,30 +122,8 @@ console.log(as+" ,"+strUser)
           append(ul,li)
 
         })       
-      })
-
-      id.addEventListener('click', (e,data) =>{
-        console.log("ls -al")
-        ul.innerHTML = "";
-        ipcRenderer.send('list:files', {
-          
-        })
-
-      })
-      notepad.addEventListener('click', (e,data) =>{
-        console.log("notepad")
-        ipcRenderer.send('start:notepad', {
-          
-        })
-
-      })
-      qr.addEventListener('click', (e,data) =>{
-       console.log("get qr code")
-        ipcRenderer.send('get:webpage', {
-         
-        })
-
-      })
+      })        
+    
 
     </script>
   </body>

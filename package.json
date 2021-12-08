@@ -1,6 +1,6 @@
 {
   "name": "electron-starter",
-  "productName": "Scan Your Network",
+  "productName": "Adams Network Scanner",
   "version": "1.0.0",
   "description": "Network Scanner and Analyser with t/shark",
   "main": "main.js",
